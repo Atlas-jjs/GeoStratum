@@ -31,7 +31,10 @@ export function setupLayerCheckboxes(map) {
           map.removeLayer(layerInfo.leafletLayer);
         }
         // If the unchecked layer contained the selected boundary, clear highlight and panel
-        if (AppState.selectedBoundary && AppState.selectedBoundary.layerKey === key) {
+        if (
+          AppState.selectedBoundary &&
+          AppState.selectedBoundary.layerKey === key
+        ) {
           deselectCurrentBoundary();
         }
       }
@@ -41,4 +44,3 @@ export function setupLayerCheckboxes(map) {
     });
   });
 }
-

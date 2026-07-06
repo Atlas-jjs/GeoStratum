@@ -1,7 +1,10 @@
 import { AppState } from "../config.js";
 import { shouldProject, projectFeaturesChunked } from "../utils/projection.js";
 import { getFeatureName } from "../utils/featureNaming.js";
-import { highlightFeature, resetHighlightedFeatures } from "./featureHighlight.js";
+import {
+  highlightFeature,
+  resetHighlightedFeatures,
+} from "./featureHighlight.js";
 import { showFeatureDetails } from "../components/ui/detailsPanel.js";
 import { updateBoundaryAnalysis } from "../components/ui/details/boundaryAnalysis.js";
 

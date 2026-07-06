@@ -2170,6 +2170,9 @@
     <!-- * Floating Details Panel (Top Left) -->
     <div id="details-panel" class="floating-card glass hidden">
       <div class="details-icons">
+        <button id="btn-screenshot" class="icon-btn" title="Take Screenshot">
+          <i data-lucide="camera"></i>
+        </button>
         <button id="close-details" class="icon-btn" title="Close Details">
           <i data-lucide="x"></i>
         </button>
@@ -2186,8 +2189,40 @@
       </div>
     </div>
 
+    <!-- * Screenshot Preview Modal -->
+    <div id="screenshot-preview-modal" class="hidden">
+      <div class="screenshot-preview-card glass">
+        <div class="screenshot-preview-header">
+          <span class="screenshot-preview-title">
+            <i data-lucide="image"></i>
+            Screenshot Preview
+          </span>
+        </div>
+        <img
+          id="screenshot-preview-img"
+          alt="Feature details screenshot preview"
+        />
+        <div class="screenshot-preview-actions">
+          <select id="screenshot-format" title="File format">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WEBP</option>
+            <option value="tiff">TIFF</option>
+          </select>
+          <button id="btn-close-preview">Cancel</button>
+          <button id="btn-download-screenshot">
+            <i data-lucide="download"></i>
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- UTIF.js (TIFF encoding for screenshot export) -->
+    <script src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js"></script>
 
     <!-- Leaflet JS -->
     <script

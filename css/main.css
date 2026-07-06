@@ -6,6 +6,7 @@
 @import url("./components/page-loader.css");
 @import url("./components/details-panel.css");
 @import url("./components/controls-trigger.css");
+@import url("./components/screenshot.css");
 
 :root {
   /* Color Palette */

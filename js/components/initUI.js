@@ -1,5 +1,6 @@
 import { initPanelController } from "./ui/panelConroller.js";
 import { initLayoutController } from "./ui/layoutController.js";
+import { initScreenshot } from "./ui/details/screenshot.js";
 
 /*
  * Main UI entry point. Wires up all panel, control, and layout
@@ -9,4 +10,5 @@ import { initLayoutController } from "./ui/layoutController.js";
 export function initializeUI(map) {
   initPanelController(map);
   initLayoutController();
+  initScreenshot(map);
 }

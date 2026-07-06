@@ -1,0 +1,167 @@
+/* * Screenshot Button */
+
+#btn-screenshot:hover {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--accent);
+}
+
+#btn-screenshot i {
+  width: 16px;
+  height: 16px;
+}
+
+#btn-screenshot.screenshot-btn--loading i {
+  animation: rotate 0.8s linear infinite;
+  color: var(--accent);
+}
+
+/* * Screenshot Preview Modal */
+#screenshot-preview-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: screenshotFadeIn 0.2s ease;
+}
+
+#screenshot-preview-modal.hidden {
+  display: none;
+}
+
+.screenshot-preview-card {
+  background: #121826;
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  padding: 24px;
+  max-width: min(520px, 92vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* * Header row */
+.screenshot-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshot-preview-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.screenshot-preview-title i {
+  width: 15px;
+  height: 15px;
+  color: var(--accent);
+}
+
+/* * Image preview */
+#screenshot-preview-img {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border-card);
+  background: rgb(14, 20, 34);
+}
+
+/* * Action row */
+.screenshot-preview-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+#btn-download-screenshot {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: var(--transition-smooth);
+}
+
+#btn-download-screenshot:hover {
+  background: #1d4ed8;
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+#btn-download-screenshot i {
+  width: 14px;
+  height: 14px;
+}
+
+#btn-close-preview {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+#btn-close-preview:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+#screenshot-format {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: auto;
+  transition: var(--transition-smooth);
+}
+
+#screenshot-format:hover,
+#screenshot-format:focus {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  outline: none;
+}
+
+#screenshot-format option {
+  background: #121826;
+  color: var(--text-primary);
+}
+
+@keyframes screenshotFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
