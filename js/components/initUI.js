@@ -1,4 +1,4 @@
-import { initPanelController } from "./ui/panelConroller.js";
+import { initPanelController } from "./ui/panelController.js";
 import { initLayoutController } from "./ui/layoutController.js";
 import { initScreenshot } from "./ui/details/screenshot.js";
 

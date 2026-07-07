@@ -2,6 +2,7 @@
 @import url("./opacity-controls.css");
 @import url("./panel-switcher.css");
 @import url("./inline-spinner.css");
+@import url("./import-controls.css");
 
 /* * Layer Containers */
 /* ? Target the inner content */
@@ -80,6 +81,25 @@
   gap: 8px;
   transition: var(--transition-smooth);
   border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+/* * Tab Panes ( Layers / Import ) */
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
 }
 
 /* * Title (Layers) */

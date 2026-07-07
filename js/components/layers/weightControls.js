@@ -11,7 +11,7 @@ export function initWeightControls() {
       const grip = control.querySelector(".weight-grip");
       const input = control.querySelector(".weight-number-input");
 
-      input.value = layerConfig.style.weight ?? 1.5;
+      input.value = layerConfig.style.weight ?? 1;
 
       const applyWeight = (val) => {
         const clamped = Math.max(0, Math.min(5, Math.round(val * 10) / 10));
