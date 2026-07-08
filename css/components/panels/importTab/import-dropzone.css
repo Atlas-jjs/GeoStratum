@@ -1,0 +1,43 @@
+/*
+ * Import Custom Layer tab — dropzone
+ */
+
+.import-hint {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.import-dropzone {
+  border: 1px dashed var(--border-card);
+  border-radius: 8px;
+  margin-top: 12px;
+  transition: var(--transition-smooth);
+}
+
+.import-dropzone:hover {
+  border-color: var(--accent);
+}
+
+.import-dropzone-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 12px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-align: center;
+}
+
+.import-dropzone-label:hover {
+  color: var(--text-primary);
+}
+
+.import-dropzone-label i {
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+}

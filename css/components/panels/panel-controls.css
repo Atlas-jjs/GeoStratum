@@ -2,7 +2,7 @@
 @import url("./opacity-controls.css");
 @import url("./panel-switcher.css");
 @import url("./inline-spinner.css");
-@import url("./import-controls.css");
+@import url("./importTab/import-controls.css");
 
 /* * Layer Containers */
 /* ? Target the inner content */

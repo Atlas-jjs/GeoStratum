@@ -2,7 +2,7 @@ import { initOpacityControls } from "../layers/opacityControls.js";
 import { initWeightControls } from "../layers/weightControls.js";
 // import { initLayerContainer } from "../layers/layerSwitcher.js";
 import { setupLayerCheckboxes } from "../layers/layerControls.js";
-import { initImportControls } from "../layers/importControls.js";
+import { initImportControls } from "../layers/importTab/importControls.js";
 import { deselectCurrentBoundary } from "../../map/layerRenderer.js";
 import { initTabController } from "./tabController.js";
 
