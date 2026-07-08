@@ -1432,13 +1432,13 @@
                   </div>
                 </div>
               </div>
-              <!-- Import Tab -->
+              <!-- * Import Tab -->
               <div class="tab-pane" id="tab-import">
                 <div class="title">Import Custom Layer</div>
                 <p class="import-hint">
                   Upload a GeoJSON file or a zipped Shapefile (.zip). You can
                   rename the layer, pick a color, and adjust its opacity and
-                  weight just like the built-in layers below.
+                  weight just like the built-in layers in the Layers Tab.
                 </p>
 
                 <div class="import-dropzone">
@@ -2759,7 +2759,7 @@
                 <p class="import-hint">
                   Upload a GeoJSON file or a zipped Shapefile (.zip). You can
                   rename the layer, pick a color, and adjust its opacity and
-                  weight just like the built-in layers below.
+                  weight just like the built-in layers in the Layers Tab.
                 </p>
 
                 <div class="import-dropzone">
@@ -2843,6 +2843,180 @@
         </div>
       </div>
     </div>
+
+    <!-- * Delete Confirmation Modal (imported/custom layers only - rule: -->
+    <!-- unsaved imports skip this entirely, see importControls.js) -->
+    <div id="delete-confirm-modal" class="hidden">
+      <div class="delete-confirm-card">
+        <div class="delete-confirm-header">
+          <span class="delete-confirm-title">
+            <i data-lucide="alert-triangle"></i>
+            Remove Layer
+          </span>
+        </div>
+        <p class="delete-confirm-message" id="delete-confirm-message">
+          Remove this layer? This cannot be undone.
+        </p>
+        <div class="delete-confirm-actions">
+          <button
+            id="btn-cancel-delete"
+            class="modal-btn modal-btn-cancel"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            id="btn-confirm-delete"
+            class="modal-btn modal-btn-danger"
+            type="button"
+          >
+            <i data-lucide="trash-2"></i>
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- * Duplicate Layer Name Toast - informational only, never blocks -->
+    <!-- the import (auto-renamed layers are non-destructive/reversible) -->
+    <div
+      id="duplicate-name-toast"
+      class="hidden"
+      role="status"
+      aria-live="polite"
+    >
+      <i data-lucide="info"></i>
+      <span id="duplicate-name-toast-message"></span>
+    </div>
+
+    <style>
+      /* ---------- Delete confirmation modal ---------- */
+      #delete-confirm-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
+      }
+      #delete-confirm-modal.hidden {
+        display: none;
+      }
+
+      .delete-confirm-card {
+        width: min(380px, 100%);
+        padding: 24px;
+        border-radius: 16px;
+        background: #1c1c1e;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        color: #f5f5f5;
+      }
+
+      .delete-confirm-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      .delete-confirm-title i {
+        width: 18px;
+        height: 18px;
+        color: #f43f5e;
+        flex-shrink: 0;
+      }
+
+      .delete-confirm-message {
+        margin: 0 0 20px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: rgba(245, 245, 245, 0.7);
+      }
+
+      .delete-confirm-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .modal-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+      .modal-btn i {
+        width: 14px;
+        height: 14px;
+      }
+
+      .modal-btn-cancel {
+        background: transparent;
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #f5f5f5;
+      }
+      .modal-btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .modal-btn-danger {
+        background: #e11d48;
+        color: #fff;
+      }
+      .modal-btn-danger:hover {
+        background: #be123c;
+      }
+
+      /* ---------- Duplicate layer name toast ---------- */
+      #duplicate-name-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: min(420px, calc(100vw - 32px));
+        padding: 10px 16px;
+        border-radius: 10px;
+        background: #1c1c1e;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #f5f5f5;
+        font-size: 0.85rem;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, 8px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+      #duplicate-name-toast.hidden {
+        display: none;
+      }
+      #duplicate-name-toast.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, 0);
+      }
+      #duplicate-name-toast i {
+        width: 16px;
+        height: 16px;
+        color: #38bdf8;
+        flex-shrink: 0;
+      }
+    </style>
 
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
