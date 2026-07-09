@@ -29,7 +29,7 @@ export function highlightFeature(layer) {
   layer.setStyle({
     weight: 3.5,
     color: "#fbbf24",
-    fillOpacity: 0.4,
+    fillOpacity: 0.1,
   });
 }
 

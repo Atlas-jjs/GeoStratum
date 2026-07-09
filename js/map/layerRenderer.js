@@ -8,6 +8,124 @@ import {
 import { showFeatureDetails } from "../components/ui/detailsPanel.js";
 import { updateBoundaryAnalysis } from "../components/ui/details/boundaryAnalysis.js";
 
+const layerPriority = {
+  cad_municipality: 100,
+  namria_municipality: 100,
+  cad_province: 90,
+  namria_province: 90,
+  cad_boundary: 80,
+  namria_boundary: 80,
+};
+
+// Helper for bounding box intersection
+function doBboxesOverlap(bbox1, bbox2) {
+  return !(
+    bbox1[0] > bbox2[2] ||
+    bbox1[2] < bbox2[0] ||
+    bbox1[1] > bbox2[3] ||
+    bbox1[3] < bbox2[1]
+  );
+}
+
+// Spatial filtering and clipping using Turf.js
+function getFeaturesWithinPolygon(geojson, boundaryFeature) {
+  if (!geojson || !geojson.features) return geojson;
+  if (!boundaryFeature) return geojson;
+
+  let boundaryBbox;
+  try {
+    boundaryBbox = turf.bbox(boundaryFeature);
+  } catch (e) {
+    return geojson;
+  }
+
+  const filteredFeatures = [];
+
+  for (let i = 0; i < geojson.features.length; i++) {
+    const feature = geojson.features[i];
+    if (!feature.geometry) continue;
+
+    // 1. Fast Bounding Box overlap check
+    let featureBbox;
+    try {
+      featureBbox = turf.bbox(feature);
+    } catch (e) {
+      filteredFeatures.push(feature);
+      continue;
+    }
+
+    if (!doBboxesOverlap(boundaryBbox, featureBbox)) {
+      continue;
+    }
+
+    // 2. Perform intersection/clipping
+    const geomType = feature.geometry.type;
+    if (geomType === "Point" || geomType === "MultiPoint") {
+      try {
+        if (turf.booleanPointInPolygon(feature, boundaryFeature)) {
+          filteredFeatures.push(feature);
+        }
+      } catch (err) {
+        filteredFeatures.push(feature);
+      }
+    } else if (geomType === "Polygon" || geomType === "MultiPolygon") {
+      try {
+        const intersection = turf.intersect(feature, boundaryFeature);
+        if (intersection) {
+          intersection.properties = feature.properties;
+          filteredFeatures.push(intersection);
+        }
+      } catch (err) {
+        // Fallback: check if centroid is inside
+        try {
+          const centroid = turf.centroid(feature);
+          if (turf.booleanPointInPolygon(centroid, boundaryFeature)) {
+            filteredFeatures.push(feature);
+          }
+        } catch (e) {
+          filteredFeatures.push(feature);
+        }
+      }
+    } else if (geomType === "LineString" || geomType === "MultiLineString") {
+      try {
+        if (turf.booleanIntersects(feature, boundaryFeature)) {
+          filteredFeatures.push(feature);
+        }
+      } catch (err) {
+        filteredFeatures.push(feature);
+      }
+    } else {
+      filteredFeatures.push(feature);
+    }
+  }
+
+  return {
+    type: "FeatureCollection",
+    features: filteredFeatures,
+  };
+}
+
+// Core layer keys that should NOT be re-rendered during selection changes
+// (re-rendering them would destroy the selectedLayer/selectedBoundary references)
+const CORE_LAYER_KEYS = new Set([
+  "cad_boundary",
+  "namria_boundary",
+  "cad_province",
+  "namria_province",
+  "cad_municipality",
+  "namria_municipality",
+]);
+
+// Re-renders all checked and loaded NON-CORE layers to reflect current selection clipping
+export function reRenderAllCheckedLayers() {
+  Object.keys(AppState.layers).forEach((key) => {
+    const layerInfo = AppState.layers[key];
+    if (layerInfo.checked && layerInfo.loaded && !CORE_LAYER_KEYS.has(key)) {
+      renderGeoJSONLayer(key);
+    }
+  });
+}
+
 let _map = null;
 
 /* *
@@ -60,27 +178,40 @@ export function loadLayer(key) {
   const layerInfo = AppState.layers[key];
   if (!layerInfo) return;
 
+  // Cache: data already fetched – just re-render with current selection state
+  if (layerInfo.loaded && layerInfo.data) {
+    renderGeoJSONLayer(key);
+    if (AppState.selectedBoundary) {
+      updateBoundaryAnalysis();
+    }
+    return;
+  }
+
   const checkbox = document.getElementById(layerInfo.id);
-  const customCheckbox =
-    checkbox.parentElement.querySelector(".checkbox-custom");
-  const row = checkbox.closest(".control-checkbox");
+  let stopLoader = () => {};
 
-  // ! Guard to prevent loading the spinner while it is already loading
-  if (row.classList.contains("layer-loading")) return;
+  if (checkbox) {
+    const customCheckbox =
+      checkbox.parentElement.querySelector(".checkbox-custom");
+    const row = checkbox.closest(".control-checkbox");
 
-  const loader = document.createElement("div");
-  loader.classList.add("layer-loader");
-  checkbox.parentElement.insertBefore(loader, checkbox);
-  checkbox.classList.add("hidden");
-  customCheckbox.style.display = "none";
-  row.classList.add("layer-loading");
+    // ! Guard to prevent loading the spinner while it is already loading
+    if (row.classList.contains("layer-loading")) return;
 
-  const stopLoader = () => {
-    loader.remove();
-    checkbox.classList.remove("hidden");
-    customCheckbox.style.display = "";
-    row.classList.remove("layer-loading");
-  };
+    const loader = document.createElement("div");
+    loader.classList.add("layer-loader");
+    checkbox.parentElement.insertBefore(loader, checkbox);
+    checkbox.classList.add("hidden");
+    customCheckbox.style.display = "none";
+    row.classList.add("layer-loading");
+
+    stopLoader = () => {
+      loader.remove();
+      checkbox.classList.remove("hidden");
+      customCheckbox.style.display = "";
+      row.classList.remove("layer-loading");
+    };
+  }
 
   // Construct the absolute path pointing directly to Hugging Face
   const remoteUrl = `https://huggingface.co/datasets/Atlas-jjs/denr-geojson-data/resolve/main/${layerInfo.url}`;
@@ -104,7 +235,9 @@ export function loadLayer(key) {
     .catch((err) => {
       console.error(`Load failed for remote asset: ${remoteUrl}`, err);
       stopLoader();
-      checkbox.checked = false;
+      if (checkbox) {
+        checkbox.checked = false;
+      }
       layerInfo.checked = false;
       alert(
         `Failed to load ${layerInfo.name} layer from the remote Hugging Face dataset.`,
@@ -193,6 +326,7 @@ export function deselectCurrentBoundary() {
   }
 
   sortPolygonsInPane();
+  reRenderAllCheckedLayers();
 }
 
 /* *
@@ -223,10 +357,17 @@ export function sortPolygonsInPane() {
     }
   });
 
-  // Sort paths based on layer-level median area first, then individual feature area
+  // Sort paths based on priority (to place core layers on top), then median area, then individual feature area
   paths.sort((a, b) => {
     const layerKeyA = a.getAttribute("data-layer-key") || "";
     const layerKeyB = b.getAttribute("data-layer-key") || "";
+
+    const priorityA = layerPriority[layerKeyA] || 0;
+    const priorityB = layerPriority[layerKeyB] || 0;
+
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB; // Ascending: lower priority first (at bottom), higher priority last (on top)
+    }
 
     const medianA = layerMedianAreas[layerKeyA] ?? 0;
     const medianB = layerMedianAreas[layerKeyB] ?? 0;
@@ -261,7 +402,23 @@ function renderGeoJSONLayer(key) {
     _map.removeLayer(layerInfo.leafletLayer);
   }
 
-  layerInfo.leafletLayer = L.geoJSON(layerInfo.data, {
+  let displayData = layerInfo.data;
+
+  const isBoundaryProvinceOrMuni =
+    AppState.selectedBoundary &&
+    (AppState.selectedBoundary.layerKey === "cad_province" ||
+      AppState.selectedBoundary.layerKey === "namria_province" ||
+      AppState.selectedBoundary.layerKey === "cad_municipality" ||
+      AppState.selectedBoundary.layerKey === "namria_municipality");
+
+  if (isBoundaryProvinceOrMuni && !CORE_LAYER_KEYS.has(key)) {
+    displayData = getFeaturesWithinPolygon(
+      layerInfo.data,
+      AppState.selectedBoundary.feature,
+    );
+  }
+
+  layerInfo.leafletLayer = L.geoJSON(displayData, {
     style:
       layerInfo.colorField && layerInfo.codeColors
         ? (feature) => {
@@ -356,6 +513,9 @@ function renderGeoJSONLayer(key) {
 
           highlightFeature(e.target);
           showFeatureDetails(feature.properties, layerInfo.name);
+
+          // Re-render all checked layers to clip them to the selected boundary
+          reRenderAllCheckedLayers();
 
           // Bring the newly selected polygon to the top of the polygonsPane
           if (geomType === "Polygon" || geomType === "MultiPolygon") {

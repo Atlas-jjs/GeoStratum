@@ -253,7 +253,7 @@ export const AppState = {
       data: null,
       leafletLayer: null,
       checked: false,
-      url: "data/geojson/cadastre/CAR_Slope_Optimized.geojson",
+      url: "data/geojson/cadastre/CAR_CAD_Slope.geojson",
       colorField: "SL_Cate",
       style: {
         weight: 1,
@@ -701,8 +701,6 @@ export const AppState = {
         VHL: "#732600",
       },
     },
-    
-    },
     // * ====================== COMMON ======================
     cad_ngp: {
       id: "cad_layer-ngp",
@@ -828,4 +826,5 @@ export const AppState = {
   importedLayers: [],
   pendingLayerCount: 0,
   selectedBoundary: null,
+  activeProvinceSlopeKey: null,
 };
