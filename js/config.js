@@ -701,20 +701,7 @@ export const AppState = {
         VHL: "#732600",
       },
     },
-    namria_forestland: {
-      id: "namria-layer-forestland",
-      name: "CAR Namria Forestland",
-      loaded: false,
-      data: null,
-      leafletLayer: null,
-      checked: false,
-      url: "data/geojson/namria/CAR_NAMRIA_Forestland.geojson",
-      style: {
-        color: "#4CE600",
-        weight: 1,
-        fillOpacity: 1,
-        fillColor: "#4CE600",
-      },
+    
     },
     // * ====================== COMMON ======================
     cad_ngp: {
