@@ -70,10 +70,10 @@ export const AppState = {
       checked: false,
       url: "data/geojson/cadastre/CAR_Brush_Shrubs_2025.geojson",
       style: {
-        color: "#FEFAC2",
+        color: "#FED4C2",
         weight: 1,
         fillOpacity: 1,
-        fillColor: "#FEFAC2",
+        fillColor: "#FED4C2",
       },
     },
     cad_built_up: {
@@ -438,10 +438,10 @@ export const AppState = {
       checked: false,
       url: "data/geojson/namria/CAR_NAMRIA_BrushShrubs.geojson",
       style: {
-        color: "#FEFAC2",
+        color: "#FED4C2",
         weight: 1,
         fillOpacity: 1,
-        fillColor: "#FEFAC2",
+        fillColor: "#FED4C2",
       },
     },
     namria_built_up: {

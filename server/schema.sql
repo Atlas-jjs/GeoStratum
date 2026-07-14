@@ -2,10 +2,11 @@
 -- Run this once against your MySQL instance:
 --   mysql -u root -p < schema.sql
 
-CREATE DATABASE IF NOT EXISTS geoportal;
-USE geoportal;
+-- ! Removed for when officially hosting on the FileZilla
+CREATE DATABASE IF NOT EXISTS denr_geostratum;
+USE denr_geostratum;
 
-CREATE TABLE IF NOT EXISTS custom_layers (
+CREATE TABLE IF NOT EXISTS geostratum_imported_layers (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   panel         ENUM('cad', 'namria') NOT NULL,
   name          VARCHAR(255) NOT NULL,

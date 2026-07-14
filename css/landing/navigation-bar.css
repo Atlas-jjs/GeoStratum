@@ -1,0 +1,244 @@
+@media screen and (min-width: 320px) {
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      background 0.35s var(--ease),
+      border-color 0.35s var(--ease),
+      box-shadow 0.35s var(--ease);
+  }
+
+  .topbar.scrolled {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom-color: var(--border);
+    box-shadow: 0 1px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0; /* allow text to truncate/wrap instead of forcing overflow */
+  }
+
+  .brand img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #fff;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .brand-eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    transition: color 0.35s var(--ease);
+  }
+
+  .brand-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 11.5px;
+    line-height: 1.25;
+    color: #fff;
+    transition: color 0.35s var(--ease);
+  }
+
+  .brand-sub {
+    display: none;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.65);
+    transition: color 0.35s var(--ease);
+  }
+
+  .topbar.scrolled .brand-eyebrow {
+    color: var(--ink-faint);
+  }
+  .topbar.scrolled .brand-title {
+    color: var(--accent);
+  }
+  .topbar.scrolled .brand-sub {
+    color: var(--ink-dim);
+  }
+
+  .collab {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .collab-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  #slu-logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .collab-eyebrow {
+    display: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.35s var(--ease);
+  }
+
+  .collab-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 10.5px;
+    color: #fff;
+    transition: color 0.35s var(--ease);
+  }
+
+  .topbar.scrolled .collab-eyebrow {
+    color: var(--ink-faint);
+  }
+  .topbar.scrolled .collab-title {
+    color: var(--ink);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .topbar-inner {
+    gap: 20px;
+    padding: 12px 24px;
+  }
+
+  .brand {
+    gap: 10px;
+  }
+
+  .brand img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .brand-eyebrow {
+    font-size: 9.5px;
+  }
+
+  .brand-title {
+    font-size: 13px;
+  }
+
+  .brand-sub {
+    display: flex;
+    font-size: 11.5px;
+  }
+
+  .collab {
+    gap: 8px;
+  }
+
+  #slu-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .collab-eyebrow {
+    display: block;
+    font-size: 9.5px;
+  }
+
+  .collab-title {
+    font-size: 12.5px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .topbar-inner {
+    gap: 32px;
+    padding: 14px 36px;
+  }
+
+  .brand {
+    gap: 14px;
+  }
+
+  .brand img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .brand-eyebrow {
+    font-size: 10.5px;
+  }
+
+  .brand-title {
+    font-size: 15px;
+  }
+
+  .brand-sub {
+    font-size: 12px;
+  }
+
+  .collab {
+    gap: 8px;
+  }
+
+  #slu-logo {
+    width: 75px;
+    height: 75px;
+  }
+
+  .collab-eyebrow {
+    font-size: 10.5px;
+  }
+
+  .collab-title {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .topbar-inner {
+    gap: 36px;
+    padding: 16px 48px;
+  }
+
+  .brand {
+    gap: 16px;
+  }
+
+  .collab {
+    gap: 10px;
+  }
+}

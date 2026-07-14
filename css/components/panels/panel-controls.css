@@ -55,6 +55,8 @@
   max-height: calc(100dvh - 120px);
   overflow: hidden;
   width: 465px;
+  container-type: inline-size;
+  container-name: layer-panel;
 }
 
 /* * Panel Tabs ( Layers ) */
