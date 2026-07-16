@@ -1,0 +1,41 @@
+/* Import tab panels auth elements */
+.import-logged-out-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed var(--border-card);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.import-logged-out-view.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.btn-signin-import {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  transition: var(--transition-smooth);
+}
+
+.btn-signin-import:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.sign-in-hint {
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+}

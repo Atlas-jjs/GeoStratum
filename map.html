@@ -32,6 +32,16 @@
     <div id="map"></div>
     <div class="sky-overlay"></div>
 
+    <!-- * Map Navigation Bar (Home & Auth) -->
+    <div class="map-nav-bar" id="map-nav-bar">
+      <a href="index.html" class="map-nav-btn" id="btn-home" title="Go to Home">
+        <i data-lucide="home"></i>
+      </a>
+      <button class="map-nav-btn" id="btn-map-auth" title="Sign In">
+        <i data-lucide="user"></i>
+      </button>
+    </div>
+
     <!-- * Basemap Switcher -->
     <div id="basemap-switcher" class="leaflet-top leaflet-right">
       <div class="leaflet-control basemap-switcher">
@@ -2886,6 +2896,221 @@
     >
       <i data-lucide="info"></i>
       <span id="duplicate-name-toast-message"></span>
+    </div>
+
+    <!-- * Auth Modal Container -->
+    <div id="auth-modal" class="auth-modal-overlay hidden">
+      <!-- Login Card -->
+      <div id="card-login" class="auth-card glass reveal-auth">
+        <div class="auth-card-header">
+          <h2>Sign In to GeoStratum</h2>
+          <button class="auth-close-btn" id="btn-close-login" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="form-login" class="auth-form">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="Enter email address"
+            />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input
+              type="password"
+              id="login-password"
+              placeholder="Enter password"
+            />
+          </div>
+          <div class="auth-error-msg" id="login-error"></div>
+          <button type="submit" class="btn btn-primary auth-submit-btn">
+            Sign In
+          </button>
+        </form>
+        <div class="auth-card-footer">
+          <p>
+            Don't have an account?
+            <a href="#" id="link-to-register">Register</a>
+          </p>
+          <p><a href="#" id="link-to-reset">Forgot Password?</a></p>
+        </div>
+      </div>
+
+      <!-- Register Card -->
+      <div id="card-register" class="auth-card glass reveal-auth hidden">
+        <div class="auth-card-header">
+          <h2>Create Account</h2>
+          <button class="auth-close-btn" id="btn-close-register" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="form-register" class="auth-form">
+          <div class="form-group">
+            <label for="register-email">Email Address</label>
+            <input
+              type="email"
+              id="register-email"
+              placeholder="employee@denr.gov.ph"
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input
+              type="password"
+              id="register-password"
+              placeholder="Min 6 characters"
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-confirm-password">Confirm Password</label>
+            <input
+              type="password"
+              id="register-confirm-password"
+              placeholder="Confirm password"
+            />
+          </div>
+          <div class="auth-error-msg" id="register-error"></div>
+          <button type="submit" class="btn btn-primary auth-submit-btn">
+            Create Account
+          </button>
+        </form>
+        <div class="auth-card-footer">
+          <p>
+            Already have an account? <a href="#" id="link-to-login">Sign In</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Forgot Password Step 1: Request OTP -->
+      <div id="card-reset-request" class="auth-card glass reveal-auth hidden">
+        <div class="auth-card-header">
+          <h2>Reset Password</h2>
+          <button class="auth-close-btn" id="btn-close-reset-request" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <form id="form-reset-request" class="auth-form">
+          <div class="form-group">
+            <label for="reset-email">Email Address</label>
+            <input
+              type="email"
+              id="reset-email"
+              placeholder="Enter email address"
+            />
+          </div>
+          <div class="auth-error-msg" id="reset-request-error"></div>
+          <button type="submit" class="btn btn-primary auth-submit-btn">
+            Send OTP Code
+          </button>
+        </form>
+        <div class="auth-card-footer">
+          <p>
+            Remember your password?
+            <a href="#" class="link-to-login">Sign In</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Forgot Password Step 2: Verify OTP & Reset -->
+      <div id="card-reset-verify" class="auth-card glass reveal-auth hidden">
+        <div class="auth-card-header">
+          <h2>Check Your Email</h2>
+          <button class="auth-close-btn" id="btn-close-reset-verify" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <p style="color: var(--on-dark-dim); font-size: 0.88rem; margin: -8px 0 16px; line-height: 1.5;">
+          An OTP code has been sent to your email address. Enter it below along with your new password.
+        </p>
+        <form id="form-reset-verify" class="auth-form">
+          <div class="form-group">
+            <label for="reset-otp">OTP (One-Time Password)</label>
+            <input
+              type="text"
+              id="reset-otp"
+              placeholder="Enter 6-digit OTP"
+            />
+          </div>
+          <div class="form-group">
+            <label for="reset-new-password">New Password</label>
+            <input
+              type="password"
+              id="reset-new-password"
+              placeholder="Enter new password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="reset-confirm-password">Confirm New Password</label>
+            <input
+              type="password"
+              id="reset-confirm-password"
+              placeholder="Confirm new password"
+            />
+          </div>
+          <div class="auth-error-msg" id="reset-verify-error"></div>
+          <button type="submit" class="btn btn-primary auth-submit-btn">
+            Reset Password
+          </button>
+        </form>
+        <div class="auth-card-footer">
+          <p>
+            Remember your password?
+            <a href="#" class="link-to-login">Sign In</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Forgot Password Step 3: Success Modal -->
+      <div id="card-reset-success" class="auth-card glass reveal-auth hidden">
+        <div class="auth-card-header">
+          <h2>Reset Successful</h2>
+          <button class="auth-close-btn" id="btn-close-reset-success" title="Close">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <div class="confirm-logout-body" style="text-align: center; margin: 20px 0;">
+          <div class="ico" style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); color: var(--risk-low); margin-bottom: 16px;">
+            <i data-lucide="check-circle" style="width: 32px; height: 32px;"></i>
+          </div>
+          <p style="color: #f1f5f9; font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">
+            Your password has been reset successfully. You can now log in using your new credentials.
+          </p>
+          <button id="btn-reset-success-signin" class="btn btn-primary" style="width: 100%;">
+            Sign In Now
+          </button>
+        </div>
+      </div>
+
+      <!-- * Sign Out Confirmation Card -->
+      <div id="card-confirm-logout" class="auth-card glass reveal-auth hidden">
+        <div class="auth-card-header">
+          <h2>Are you sure you want to sign out?</h2>
+        </div>
+        <div class="confirm-logout-body">
+          <p>
+            You will not be able to interact with your custom imported layers
+          </p>
+        </div>
+        <div class="confirm-logout-actions">
+          <button
+            type="button"
+            class="btn-cancel-signout"
+            id="btn-cancel-signout"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn-danger-signout"
+            id="btn-confirm-signout"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- html2canvas -->

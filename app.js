@@ -4,6 +4,7 @@ import {
   initLayerRenderer,
   loadDefaultLayers,
 } from "./js/map/layerRenderer.js";
+import { initMapAuthUI } from "./js/components/ui/authUi.js";
 
 let map = null;
 
@@ -37,4 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initLayerRenderer(map);
   initializeUI(map);
   loadDefaultLayers();
+
+  // Initialize Auth Controls
+  initMapAuthUI();
 });

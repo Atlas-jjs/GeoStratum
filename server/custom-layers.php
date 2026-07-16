@@ -1,4 +1,7 @@
 <?php
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+session_start();
 
 require __DIR__ . '/db.php';
 
@@ -18,6 +21,13 @@ function send_json($data, int $status = 200): void
     echo json_encode($data);
     exit;
 }
+
+// Enforce authentication
+if (!isset($_SESSION['user_id'])) {
+    send_json(['error' => 'Unauthorized. Please sign in.'], 401);
+}
+
+$userId = (int)$_SESSION['user_id'];
 
 function row_to_api(array $row): array
 {
@@ -43,8 +53,8 @@ try {
     switch ($method) {
         case 'GET':
             if ($id) {
-                $stmt = $pdo->prepare('SELECT * FROM custom_layers WHERE id = ?');
-                $stmt->execute([$id]);
+                $stmt = $pdo->prepare('SELECT * FROM geostratum_imported_layers WHERE id = ? AND user_id = ?');
+                $stmt->execute([$id, $userId]);
                 $row = $stmt->fetch();
                 if (!$row) {
                     send_json(['error' => 'Not found'], 404);
@@ -55,11 +65,12 @@ try {
             $panel = $_GET['panel'] ?? null;
             if ($panel) {
                 $stmt = $pdo->prepare(
-                    'SELECT * FROM custom_layers WHERE panel = ? ORDER BY created_at DESC'
+                    'SELECT * FROM geostratum_imported_layers WHERE user_id = ? AND panel = ? ORDER BY created_at DESC'
                 );
-                $stmt->execute([$panel]);
+                $stmt->execute([$userId, $panel]);
             } else {
-                $stmt = $pdo->query('SELECT * FROM custom_layers ORDER BY created_at DESC');
+                $stmt = $pdo->prepare('SELECT * FROM geostratum_imported_layers WHERE user_id = ? ORDER BY created_at DESC');
+                $stmt->execute([$userId]);
             }
             send_json(array_map('row_to_api', $stmt->fetchAll()));
             break;
@@ -72,10 +83,11 @@ try {
             }
 
             $stmt = $pdo->prepare(
-                'INSERT INTO custom_layers (panel, name, color, fill_opacity, weight, geojson)
-                 VALUES (?, ?, ?, ?, ?, ?)'
+                'INSERT INTO geostratum_imported_layers (user_id, panel, name, color, fill_opacity, weight, geojson)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)'
             );
             $stmt->execute([
+                $userId,
                 $body['panel'],
                 $body['name'],
                 $body['color'] ?? '#3b82f6',
@@ -93,10 +105,17 @@ try {
             }
             $body = json_decode(file_get_contents('php://input'), true) ?? [];
 
+            // Verify ownership first
+            $stmt = $pdo->prepare('SELECT id FROM geostratum_imported_layers WHERE id = ? AND user_id = ?');
+            $stmt->execute([$id, $userId]);
+            if (!$stmt->fetch()) {
+                send_json(['error' => 'Forbidden'], 403);
+            }
+
             $stmt = $pdo->prepare(
-                'UPDATE custom_layers
+                'UPDATE geostratum_imported_layers
                  SET name = ?, color = ?, fill_opacity = ?, weight = ?, geojson = ?
-                 WHERE id = ?'
+                 WHERE id = ? AND user_id = ?'
             );
             $stmt->execute([
                 $body['name'] ?? '',
@@ -105,6 +124,7 @@ try {
                 $body['weight'] ?? 1,
                 json_encode($body['geojson'] ?? null),
                 $id,
+                $userId
             ]);
 
             send_json(['ok' => true]);
@@ -114,8 +134,16 @@ try {
             if (!$id) {
                 send_json(['error' => 'id is required'], 400);
             }
-            $stmt = $pdo->prepare('DELETE FROM custom_layers WHERE id = ?');
-            $stmt->execute([$id]);
+
+            // Verify ownership first
+            $stmt = $pdo->prepare('SELECT id FROM geostratum_imported_layers WHERE id = ? AND user_id = ?');
+            $stmt->execute([$id, $userId]);
+            if (!$stmt->fetch()) {
+                send_json(['error' => 'Forbidden'], 403);
+            }
+
+            $stmt = $pdo->prepare('DELETE FROM geostratum_imported_layers WHERE id = ? AND user_id = ?');
+            $stmt->execute([$id, $userId]);
             send_json(['ok' => true]);
             break;
 
@@ -124,5 +152,5 @@ try {
     }
 } catch (Throwable $e) {
     error_log($e->getMessage());
-    send_json(['error' => 'Server error'], 500);
+    send_json(['error' => 'Server error: ' . $e->getMessage()], 500);
 }

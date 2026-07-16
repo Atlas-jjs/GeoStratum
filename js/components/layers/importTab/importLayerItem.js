@@ -60,7 +60,7 @@ export function buildListItem(entry, store) {
       </button>
     </div>
     <div class="layer-style-controls">${styleInputsHtml}</div>
-    <button class="btn-primary imported-save-btn">
+    <button class="btn-primary btn imported-save-btn">
       <i data-lucide="database"></i>
       <span class="imported-save-btn-label">Save to Database</span>
     </button>

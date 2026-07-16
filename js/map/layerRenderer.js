@@ -7,6 +7,7 @@ import {
 } from "./featureHighlight.js";
 import { showFeatureDetails } from "../components/ui/detailsPanel.js";
 import { updateBoundaryAnalysis } from "../components/ui/details/boundaryAnalysis.js";
+import { showToast } from "../utils/toast.js";
 
 const layerPriority = {
   cad_municipality: 100,
@@ -214,7 +215,7 @@ export function loadLayer(key) {
   }
 
   // Construct the absolute path pointing directly to Hugging Face
-  const remoteUrl = `https://huggingface.co/datasets/Atlas-jjs/denr-geojson-data/resolve/main/${layerInfo.url}`;
+  const remoteUrl = `https://huggingface.co/datasets/DENR-OJT-GeoStratum/denr-geojson-data/resolve/main/${layerInfo.url}`;
 
   fetch(remoteUrl)
     .then((res) => {
@@ -239,8 +240,9 @@ export function loadLayer(key) {
         checkbox.checked = false;
       }
       layerInfo.checked = false;
-      alert(
+      showToast(
         `Failed to load ${layerInfo.name} layer from the remote Hugging Face dataset.`,
+        "error"
       );
     });
 

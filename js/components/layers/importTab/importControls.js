@@ -2,6 +2,9 @@ import { AppState } from "../../../config.js";
 import { listCustomLayers } from "../../../api/customLayersApi.js";
 import { buildListItem } from "./importLayerItem.js";
 import { showDuplicateNameNotice } from "./importDialogs.js";
+import { onAuthStateChange } from "../../../utils/auth.js";
+import { openModal } from "../../ui/authUi.js";
+import { showToast } from "../../../utils/toast.js";
 
 /*
  * Flow: user uploads a .geojson/.json or zipped Shapefile (parsed via
@@ -39,28 +42,104 @@ export async function initImportControls(map, panel) {
 
   const fileInput = document.getElementById(`${panel}-import-file`);
   const listEl = document.getElementById(`${panel}-imported-layer-list`);
-  if (!fileInput || !listEl) return;
+  const panelEl = document.getElementById(`${panel}-controls-panel`);
+  if (!panelEl) return;
+  const tabImportEl = panelEl.querySelector("#tab-import");
+  if (!fileInput || !listEl || !tabImportEl) return;
 
-  fileInput.addEventListener("change", (e) =>
+  const hintEl = tabImportEl.querySelector(".import-hint");
+  const dropzoneEl = tabImportEl.querySelector(".import-dropzone");
+
+  // Create logged out view container if not already exists
+  let loggedOutView = tabImportEl.querySelector(".import-logged-out-view");
+  if (!loggedOutView) {
+    loggedOutView = document.createElement("div");
+    loggedOutView.className = "import-logged-out-view hidden";
+    loggedOutView.innerHTML = `
+      <p class="sign-in-hint">
+        Please sign in to import, style, and save your custom layers.
+      </p>
+      <button class="btn btn-primary btn-signin-import" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+        <i data-lucide="log-in"></i>
+        <span>Sign In</span>
+      </button>
+    `;
+    tabImportEl.appendChild(loggedOutView);
+
+    // Bind sign in button
+    loggedOutView
+      .querySelector(".btn-signin-import")
+      .addEventListener("click", () => {
+        openModal("login");
+      });
+  }
+
+  // Handle file input changes (clone to reset old listeners)
+  fileInput.replaceWith(fileInput.cloneNode(true));
+  const newFileInput = document.getElementById(`${panel}-import-file`);
+  newFileInput.addEventListener("change", (e) =>
     handleFileSelected(e, panel, listEl),
   );
 
-  try {
-    const saved = await listCustomLayers(panel);
-    saved.forEach((row) =>
-      addImportedLayer(panel, listEl, {
-        dbId: row.id,
-        name: row.name,
-        color: row.color,
-        fillOpacity: row.fillOpacity,
-        weight: row.weight,
-        geojson: row.geojson,
-      }),
-    );
-  } catch (err) {
-    // Non-fatal: the server may not be running yet during early development.
-    console.warn("Could not load saved custom layers:", err.message);
-  }
+  let currentLoadedUserId = null;
+
+  // Listen to auth changes
+  onAuthStateChange(async (state) => {
+    if (state.loggedIn) {
+      // Logged In: Show import UI
+      loggedOutView.classList.add("hidden");
+      if (hintEl) hintEl.classList.remove("hidden");
+      if (dropzoneEl) dropzoneEl.classList.remove("hidden");
+      listEl.classList.remove("hidden");
+
+      // Reload saved layers only if user ID changes
+      if (currentLoadedUserId !== state.user.id) {
+        currentLoadedUserId = state.user.id;
+        clearPanelLayers(panel, listEl);
+
+        try {
+          const saved = await listCustomLayers(panel);
+          saved.forEach((row) =>
+            addImportedLayer(panel, listEl, {
+              dbId: row.id,
+              name: row.name,
+              color: row.color,
+              fillOpacity: row.fillOpacity,
+              weight: row.weight,
+              geojson: row.geojson,
+            }),
+          );
+        } catch (err) {
+          console.warn("Could not load saved custom layers:", err.message);
+        }
+      }
+    } else {
+      currentLoadedUserId = null;
+      loggedOutView.classList.remove("hidden");
+      if (hintEl) hintEl.classList.add("hidden");
+      if (dropzoneEl) dropzoneEl.classList.add("hidden");
+      listEl.classList.add("hidden");
+
+      clearPanelLayers(panel, listEl);
+    }
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
+}
+
+function clearPanelLayers(panel, listEl) {
+  const toRemove = AppState.importedLayers.filter((l) => l.panel === panel);
+  toRemove.forEach((l) => {
+    if (l.leafletLayer && _map.hasLayer(l.leafletLayer)) {
+      _map.removeLayer(l.leafletLayer);
+    }
+  });
+  AppState.importedLayers = AppState.importedLayers.filter(
+    (l) => l.panel !== panel,
+  );
+  listEl.innerHTML = "";
 }
 
 async function handleFileSelected(e, panel, listEl) {
@@ -85,7 +164,7 @@ async function handleFileSelected(e, panel, listEl) {
     });
   } catch (err) {
     console.error("Failed to import file", err);
-    alert(`Could not read "${file.name}" as GeoJSON or a zipped Shapefile.`);
+    showToast(`Could not read "${file.name}" as GeoJSON or a zipped Shapefile.`, "error");
   }
 }
 
@@ -96,8 +175,6 @@ async function parseImportedFile(file) {
   if (ext !== "zip") return JSON.parse(await file.text());
 
   const buffer = await file.arrayBuffer();
-  // shp.js (loaded globally in index.html): zip -> one FeatureCollection
-  // or an array of them.
   const result = await window.shp(buffer);
   return Array.isArray(result) ? mergeFeatureCollections(result) : result;
 }
@@ -116,7 +193,6 @@ const snapshotOf = (entry) => ({
   weight: entry.style.weight,
 });
 
-// True if the entry has never been saved, or differs from its DB record.
 const isDirty = (entry) => {
   const snap = entry.savedSnapshot;
   if (!snap) return true;

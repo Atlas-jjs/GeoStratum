@@ -15,6 +15,9 @@
   margin-top: 12px;
   transition: var(--transition-smooth);
 }
+.import-dropzone.hidden {
+  display: none;
+}
 
 .import-dropzone:hover {
   border-color: var(--accent);

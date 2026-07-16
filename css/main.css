@@ -1,16 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
 
-@import url("./components/basemap-switcher.css");
-@import url("./components/panels/panel-controls.css");
-@import url("./components/leaflet.css");
-@import url("./components/page-loader.css");
-@import url("./components/details-panel.css");
-@import url("./components/controls-trigger.css");
-@import url("./components/screenshot.css");
-@import url("./landing/base.css");
-@import url("./landing/navigation-bar.css");
-@import url("./landing/sections.css");
-@import url("./landing/footer.css");
+@import url("./components/components-controls.css");
+@import url("./landing/landing-controls.css");
 
 :root {
   /* Color Palette */
@@ -32,7 +23,7 @@
 
   --on-dark: #f4f7fa;
   --on-dark-dim: #b7c2d1;
-  --on-dark-faint: #7d8aa0;
+  --on-dark-faint: #6e7786;
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
