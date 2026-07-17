@@ -230,3 +230,15 @@
   background-color: rgba(239, 68, 68, 0.05) !important;
 }
 
+@media screen and (max-width: 767px) {
+  .user-greeting {
+    display: none !important;
+  }
+  .auth-user-pill {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}
+
+

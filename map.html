@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon" />
 
-    <!-- Leaflet CSS -->
+    <!-- * Leaflet CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -15,15 +15,14 @@
       crossorigin=""
     />
 
-    <!-- Custom CSS -->
+    <!-- * Custom CSS -->
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
     <!-- * Page Loading Overlay -->
     <div id="page-loader" class="page-loader">
       <div class="loader-content">
-        <img src="./res/Spinner.jpg" alt="Loading" class="loader-logo" />
-        <!-- <div class="loader-spinner"></div> -->
+        <div class="loader-spinner"></div>
         <p class="loader-text">Loading map layers...</p>
       </div>
     </div>
@@ -2988,7 +2987,11 @@
       <div id="card-reset-request" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Reset Password</h2>
-          <button class="auth-close-btn" id="btn-close-reset-request" title="Close">
+          <button
+            class="auth-close-btn"
+            id="btn-close-reset-request"
+            title="Close"
+          >
             <i data-lucide="x"></i>
           </button>
         </div>
@@ -3018,21 +3021,29 @@
       <div id="card-reset-verify" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Check Your Email</h2>
-          <button class="auth-close-btn" id="btn-close-reset-verify" title="Close">
+          <button
+            class="auth-close-btn"
+            id="btn-close-reset-verify"
+            title="Close"
+          >
             <i data-lucide="x"></i>
           </button>
         </div>
-        <p style="color: var(--on-dark-dim); font-size: 0.88rem; margin: -8px 0 16px; line-height: 1.5;">
-          An OTP code has been sent to your email address. Enter it below along with your new password.
+        <p
+          style="
+            color: var(--on-dark-dim);
+            font-size: 0.88rem;
+            margin: -8px 0 16px;
+            line-height: 1.5;
+          "
+        >
+          An OTP code has been sent to your email address. Enter it below along
+          with your new password.
         </p>
         <form id="form-reset-verify" class="auth-form">
           <div class="form-group">
             <label for="reset-otp">OTP (One-Time Password)</label>
-            <input
-              type="text"
-              id="reset-otp"
-              placeholder="Enter 6-digit OTP"
-            />
+            <input type="text" id="reset-otp" placeholder="Enter 6-digit OTP" />
           </div>
           <div class="form-group">
             <label for="reset-new-password">New Password</label>
@@ -3067,18 +3078,50 @@
       <div id="card-reset-success" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Reset Successful</h2>
-          <button class="auth-close-btn" id="btn-close-reset-success" title="Close">
+          <button
+            class="auth-close-btn"
+            id="btn-close-reset-success"
+            title="Close"
+          >
             <i data-lucide="x"></i>
           </button>
         </div>
-        <div class="confirm-logout-body" style="text-align: center; margin: 20px 0;">
-          <div class="ico" style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); color: var(--risk-low); margin-bottom: 16px;">
-            <i data-lucide="check-circle" style="width: 32px; height: 32px;"></i>
+        <div
+          class="confirm-logout-body"
+          style="text-align: center; margin: 20px 0"
+        >
+          <div
+            class="ico"
+            style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 64px;
+              height: 64px;
+              border-radius: 50%;
+              background: rgba(16, 185, 129, 0.1);
+              color: var(--risk-low);
+              margin-bottom: 16px;
+            "
+          >
+            <i data-lucide="check-circle" style="width: 32px; height: 32px"></i>
           </div>
-          <p style="color: #f1f5f9; font-size: 0.95rem; line-height: 1.5; margin-bottom: 24px;">
-            Your password has been reset successfully. You can now log in using your new credentials.
+          <p
+            style="
+              color: #f1f5f9;
+              font-size: 0.95rem;
+              line-height: 1.5;
+              margin-bottom: 24px;
+            "
+          >
+            Your password has been reset successfully. You can now log in using
+            your new credentials.
           </p>
-          <button id="btn-reset-success-signin" class="btn btn-primary" style="width: 100%;">
+          <button
+            id="btn-reset-success-signin"
+            class="btn btn-primary"
+            style="width: 100%"
+          >
             Sign In Now
           </button>
         </div>

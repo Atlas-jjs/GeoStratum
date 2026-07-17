@@ -35,7 +35,7 @@ function initHeroMap() {
     zoomControl: false,
     attributionControl: true,
     scrollWheelZoom: false,
-    dragging: !L.Browser.mobile,
+    dragging: false,
     doubleClickZoom: false,
     touchZoom: true,
     minZoom: 6,
@@ -57,6 +57,9 @@ function initHeroMap() {
 
   if (reduceMotion) {
     map.fitBounds(carBoundsLL, { padding: [20, 20] });
+    if (!L.Browser.mobile) {
+      map.dragging.enable();
+    }
   } else {
     map.fitBounds(
       [
@@ -66,6 +69,11 @@ function initHeroMap() {
       { animate: false },
     );
     window.setTimeout(function () {
+      map.once("moveend", function () {
+        if (!L.Browser.mobile) {
+          map.dragging.enable();
+        }
+      });
       map.flyToBounds(carBoundsLL, {
         padding: [20, 20],
         duration: 2.6,

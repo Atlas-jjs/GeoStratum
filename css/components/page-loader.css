@@ -30,12 +30,6 @@
   text-align: center;
 }
 
-.loader-logo {
-  border-radius: 100%;
-  object-fit: contain;
-  animation: rotate 1.55s linear infinite;
-}
-
 .loader-spinner {
   width: 36px;
   height: 36px;
@@ -51,19 +45,7 @@
   letter-spacing: 0.04em;
 }
 
-@media screen and (min-width: 320px) {
-  .loader-logo {
-    width: 110px;
-    height: 110px;
-  }
-}
-
 @media screen and (min-width: 768px) {
-  .loader-logo {
-    width: 140px;
-    height: 140px;
-  }
-
   .loader-content {
     gap: 14px;
   }
@@ -72,12 +54,5 @@
     font-size: 12px;
     text-align: center;
     padding: 0 20px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .loader-logo {
-    width: 220px;
-    height: 220px;
   }
 }
