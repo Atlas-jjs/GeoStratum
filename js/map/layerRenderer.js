@@ -214,12 +214,12 @@ export function loadLayer(key) {
     };
   }
 
-  // Construct the absolute path pointing directly to Hugging Face
-  const remoteUrl = `https://huggingface.co/datasets/DENR-OJT-GeoStratum/denr-geojson-data/resolve/main/${layerInfo.url}`;
+  // Fetch GeoJSON from MySQL endpoint
+  const dbUrl = `server/geojson.php?path=${encodeURIComponent(layerInfo.url)}`;
 
-  fetch(remoteUrl)
+  fetch(dbUrl)
     .then((res) => {
-      if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${remoteUrl}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${dbUrl}`);
       return res.json();
     })
     .then((geojson) => {
@@ -234,47 +234,17 @@ export function loadLayer(key) {
       }
     })
     .catch((err) => {
-      console.error(`Load failed for remote asset: ${remoteUrl}`, err);
+      console.error(`Load failed for asset: ${dbUrl}`, err);
       stopLoader();
       if (checkbox) {
         checkbox.checked = false;
       }
       layerInfo.checked = false;
       showToast(
-        `Failed to load ${layerInfo.name} layer from the remote Hugging Face dataset.`,
+        `Failed to load ${layerInfo.name} layer from database.`,
         "error"
       );
     });
-
-  // const localUrl = layerInfo.url;
-
-  // fetch(localUrl)
-  //   .then((res) => {
-  //     if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${localUrl}`);
-  //     return res.json();
-  //   })
-  //   .then((geojson) => {
-  //     if (shouldProject(geojson)) {
-  //       projectFeaturesChunked(geojson.features, () => {
-  //         stopLoader();
-  //         handleGeoJSONLoadSuccess(key, geojson);
-  //       });
-  //     } else {
-  //       stopLoader();
-  //       handleGeoJSONLoadSuccess(key, geojson);
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.error(`Load failed for local asset: ${localUrl}`, err);
-  //     stopLoader();
-  //     if (checkbox) {
-  //       checkbox.checked = false;
-  //     }
-  //     layerInfo.checked = false;
-  //     alert(
-  //       `Failed to load ${layerInfo.name} layer from the local data folder.`,
-  //     );
-  //   });
 }
 
 // Internal Helpers

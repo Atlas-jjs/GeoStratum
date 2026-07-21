@@ -28,3 +28,39 @@ CREATE TABLE IF NOT EXISTS geostratum_imported_layers (
   INDEX idx_user (user_id),
   CONSTRAINT fk_geostratum_imported_layers_user FOREIGN KEY (user_id) REFERENCES geostratum_users(id) ON DELETE CASCADE
 );
+
+-- ─── GeoJSON asset tables ────────────────────────────────────────────────────
+-- GeoJSON files are stored as gzip-compressed binary (LONGBLOB).
+-- Serving them with Content-Encoding: gzip lets the browser decompress
+-- transparently, keeping PHP memory use low even for large files.
+-- file_size stores the original uncompressed byte count for diagnostics.
+
+CREATE TABLE IF NOT EXISTS geostratum_geojson_cadastre (
+  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  filename   VARCHAR(255) NOT NULL UNIQUE,
+  geojson    LONGBLOB     NOT NULL,
+  file_size  INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_filename (filename)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS geostratum_geojson_namria (
+  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  filename   VARCHAR(255) NOT NULL UNIQUE,
+  geojson    LONGBLOB     NOT NULL,
+  file_size  INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_filename (filename)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS geostratum_geojson_common (
+  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  filename   VARCHAR(255) NOT NULL UNIQUE,
+  geojson    LONGBLOB     NOT NULL,
+  file_size  INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_filename (filename)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

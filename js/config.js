@@ -384,7 +384,7 @@ export const AppState = {
       },
     },
     namria_province: {
-      id: "namria_layer-province",
+      id: "namria-layer-province",
       name: "NAMRIA Provinces",
       loaded: false,
       data: null,
@@ -399,7 +399,7 @@ export const AppState = {
       },
     },
     namria_municipality: {
-      id: "namria_layer-municipality",
+      id: "namria-layer-municipality",
       name: "NAMRIA Municipalities",
       loaded: false,
       data: null,
@@ -703,7 +703,7 @@ export const AppState = {
     },
     // * ====================== COMMON ======================
     cad_ngp: {
-      id: "cad_layer-ngp",
+      id: "cad-layer-ngp",
       name: "CAR NGP",
       loaded: false,
       data: null,
@@ -733,7 +733,7 @@ export const AppState = {
       },
     },
     namria_ngp: {
-      id: "namria_layer-ngp",
+      id: "namria-layer-ngp",
       name: "CAR NGP",
       loaded: false,
       data: null,
@@ -763,7 +763,7 @@ export const AppState = {
       },
     },
     cad_tenurial_instrument: {
-      id: "cad_layer-tenurial_instrument",
+      id: "cad-layer-tenurial_instrument",
       name: "CAR Tenurial Instrument",
       loaded: false,
       data: null,
@@ -778,7 +778,7 @@ export const AppState = {
       },
     },
     namria_tenurial_instrument: {
-      id: "namria_layer-tenurial_instrument",
+      id: "namria-layer-tenurial_instrument",
       name: "CAR Tenurial Instrument",
       loaded: false,
       data: null,
