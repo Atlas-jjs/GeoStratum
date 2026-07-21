@@ -1,0 +1,63 @@
+/* * Landing Page topbar specific styles */
+.auth-header-container {
+  display: flex;
+  align-items: center;
+}
+
+.auth-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+.topbar.scrolled .auth-user-pill {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.08);
+  color: var(--ink);
+}
+
+.btn-logout-nav {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+  font-family: var(--font-body);
+}
+
+.btn-logout-nav:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #fff;
+}
+
+.topbar.scrolled .btn-logout-nav {
+  border-color: var(--border-strong);
+  color: var(--ink);
+}
+
+.topbar.scrolled .btn-logout-nav:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+@media screen and (max-width: 767px) {
+  .user-greeting {
+    display: none !important;
+  }
+  .auth-user-pill {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}

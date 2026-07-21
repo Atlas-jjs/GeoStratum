@@ -1,4 +1,4 @@
-/* Toast Notification styles */
+/* * Toast Notification styles */
 #toast-container {
   position: fixed;
   top: 24px;
@@ -78,7 +78,7 @@
   color: var(--accent-bright);
 }
 
-/* Animations */
+/* * Animations */
 .reveal-toast {
   animation: slideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }

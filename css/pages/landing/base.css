@@ -20,7 +20,7 @@
   position: relative;
 }
 
-/* * ===== Features and Legend Section ===== */
+/* * Features and Legend Section */
 #features {
   background: var(--bg-alt);
 }
@@ -40,36 +40,4 @@
   color: var(--ink-dim);
   font-size: 1rem;
   line-height: 1.65;
-}
-
-/* * Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 13.5px;
-  padding: 13px 24px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s var(--ease);
-  white-space: nowrap;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.22);
-  transform: translateY(-1px);
-}
-
-.btn svg {
-  width: 15px;
-  height: 15px;
 }

@@ -1,4 +1,4 @@
-/* * ==================== Authentication & Custom Navigation Styles ==================== */
+/* * Auth Modal */
 .auth-modal-overlay {
   position: fixed;
   top: 0;
@@ -168,80 +168,14 @@
   margin: 4px 0 10px 0;
 }
 
-/* Landing Page topbar specific styles */
-.auth-header-container {
-  display: flex;
-  align-items: center;
-  /* margin-left: auto; */
-  /* margin-right: 14px; */
-}
-
-.auth-user-pill {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  color: #fff;
-}
-
-.topbar.scrolled .auth-user-pill {
-  background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(15, 23, 42, 0.08);
-  color: var(--ink);
-}
-
-.btn-logout-nav {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  padding: 4px 10px;
-  font-size: 0.75rem;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: var(--transition-smooth);
-  font-family: var(--font-body);
-}
-
-.btn-logout-nav:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #fff;
-}
-
-.topbar.scrolled .btn-logout-nav {
-  border-color: var(--border-strong);
-  color: var(--ink);
-}
-
-.topbar.scrolled .btn-logout-nav:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-/* Invalid field validation styling */
+/* Invalid field validation styling (auth forms) */
 .invalid-field {
   border-color: var(--risk-severe) !important;
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.4) !important;
   background-color: rgba(239, 68, 68, 0.05) !important;
 }
 
-@media screen and (max-width: 767px) {
-  .user-greeting {
-    display: none !important;
-  }
-  .auth-user-pill {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-  }
-}
-
-/* Auth Success Card */
+/* Auth Success Card (e.g. password reset confirmation) */
 .auth-success-body {
   display: flex;
   flex-direction: column;
@@ -275,5 +209,56 @@
   margin-bottom: 24px;
 }
 
+/* * Sign-Out Confirmation Card */
+.confirm-logout-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 0 20px;
+}
 
+.confirm-logout-body p {
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
 
+.confirm-logout-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-logout-actions button {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    filter 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.btn-cancel-signout {
+  font-family: var(--font-body);
+  background: #7d8aa0;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: inherit;
+}
+
+.btn-cancel-signout:hover {
+  background: #6c727e;
+}
+
+.btn-danger-signout {
+  font-family: var(--font-body);
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-danger-signout:hover {
+  filter: brightness(1.1);
+}

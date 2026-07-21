@@ -233,3 +233,9 @@
     max-height: 75dvh;
   }
 }
+
+.icon-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

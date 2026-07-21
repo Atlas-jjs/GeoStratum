@@ -1,0 +1,58 @@
+:root {
+  /* * Color Palette */
+  --bg: #ffffff;
+  --bg-alt: #f4f6fa;
+  --bg-dark: #0b0e14;
+  --bg-card: rgba(18, 24, 38, 0.75);
+  --bg-dark-raised: #141b2b;
+
+  --border: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.14);
+  --border-dark: rgba(255, 255, 255, 0.12);
+  --border-dark-strong: rgba(255, 255, 255, 0.2);
+  --border-card: var(--border-dark);
+
+  --ink: #101a2b;
+  --ink-dim: #5c6675;
+  --ink-faint: #93a0b3;
+
+  --on-dark: #f4f7fa;
+  --on-dark-dim: #b7c2d1;
+  --on-dark-faint: #6e7786;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* * Accents */
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-bright: #60a5fa;
+  --accent-mute: #e4ebf3;
+  --accent-glow: rgba(37, 99, 235, 0.4);
+
+  /* * Layer Color Codes (HSL for easy glow and transparency manipulation) */
+  --color-boundary: #3b82f6; /* Blue */
+  --color-province: #06b6d4; /* Cyan */
+  --color-municipality: #10b981; /* Emerald */
+  --color-layers: #ff8181; /* Light Purple */
+
+  /* * Hazard scale — kept distinct on purpose: these are classification */
+  --risk-low: #10b981;
+  --risk-mod: #eab308;
+  --risk-high: #f97316;
+  --risk-severe: #ef4444;
+
+  /* * Typography */
+  --font-heading: "Outfit", sans-serif;
+  --font-display: var(
+    --font-heading
+  ); /* landing page headings use this alias */
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* * Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --container: 1280px;
+}

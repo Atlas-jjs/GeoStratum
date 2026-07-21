@@ -1,35 +1,5 @@
-/* GeoStratum User Manual Stylesheet */
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
-
 :root {
-  --bg-dark: #0b0e14;
-  --bg-dark-raised: #141b2b;
-  --bg-card: rgba(18, 24, 38, 0.75);
-
-  --border-dark: rgba(255, 255, 255, 0.1);
-  --border-dark-strong: rgba(255, 255, 255, 0.18);
-
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-bright: #60a5fa;
-  --accent-glow: rgba(37, 99, 235, 0.25);
-
-  --font-heading: "Outfit", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius: 12px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -37,29 +7,10 @@ html {
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: var(--font-body);
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar Customization */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Topbar Header */
+/* * Topbar Header */
 .topbar {
   background: rgba(11, 14, 20, 0.85);
   backdrop-filter: blur(12px);
@@ -122,43 +73,6 @@ body {
   gap: 12px;
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.88rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  text-decoration: none;
-  font-family: var(--font-heading);
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: 1px solid var(--accent);
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 0 16px var(--accent-glow);
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-dark);
-}
-
-.btn-outline:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  border-color: var(--border-dark-strong);
-}
-
 /* Hero Section */
 .manual-hero {
   padding: 60px 24px 40px;
@@ -184,7 +98,7 @@ body {
   font-size: 1.1rem;
 }
 
-/* Page Layout Grid */
+/* * Page Layout Grid */
 .layout-container {
   max-width: 1300px;
   margin: 0 auto;
@@ -194,7 +108,7 @@ body {
   gap: 40px;
 }
 
-/* Sidebar Navigation */
+/* * Sidebar Navigation */
 .sidebar {
   position: sticky;
   top: 100px;
@@ -255,7 +169,7 @@ body {
   padding-left: 9px;
 }
 
-/* Main Documentation Area */
+/* * Main Documentation Area */
 .doc-content {
   min-width: 0; /* Prevents flex items from overflowing */
   display: flex;
@@ -263,7 +177,7 @@ body {
   gap: 40px;
 }
 
-/* Document Section styling */
+/* * Document Section styling */
 .doc-section {
   scroll-margin-top: 100px;
   background: var(--bg-card);
@@ -327,7 +241,7 @@ body {
   color: #fff;
 }
 
-/* Interactive Accordion for FAQs */
+/* * Interactive Accordion for FAQs */
 .faq-list {
   display: flex;
   flex-direction: column;
@@ -395,7 +309,7 @@ body {
   border-top: 1px solid var(--border-dark);
 }
 
-/* Custom Callout Blocks (Notes, Warnings, Tips) */
+/* * Custom Callout Blocks (Notes, Warnings, Tips) */
 .callout {
   padding: 16px 20px;
   border-radius: 8px;
@@ -457,7 +371,7 @@ body {
   color: #fff;
 }
 
-/* Code Block Styles */
+/* * Code Block Styles */
 code {
   font-family: var(--font-mono);
   background: rgba(0, 0, 0, 0.4);
@@ -484,7 +398,7 @@ pre code {
   font-size: 0.85rem;
 }
 
-/* Feature Grid inside manual */
+/* * Feature Grid inside manual */
 .manual-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -532,7 +446,7 @@ pre code {
   line-height: 1.5;
 }
 
-/* Limitation List Highlights */
+/* * Limitation List Highlights */
 .limitation-item {
   display: flex;
   gap: 16px;
@@ -570,7 +484,7 @@ pre code {
   color: #fff;
 }
 
-/* Responsive Styles */
+/* * Responsive Styles */
 @media (max-width: 1024px) {
   .layout-container {
     grid-template-columns: 1fr;
@@ -632,7 +546,7 @@ pre code {
   }
 }
 
-/* Styled Image Figures inside Documentation */
+/* * Styled Image Figures inside Documentation */
 .doc-figure {
   margin: 24px 0;
   border: 1px solid var(--border-dark);
@@ -676,11 +590,6 @@ pre code {
   flex-shrink: 0;
 }
 
-/* Two-Column Figure Rows
-   Used for smaller UI crops / screenshots that would otherwise get
-   upscaled (and look blurry) if forced to the full content width.
-   Images inside keep their native pixel size (or shrink to fit),
-   never stretch beyond it. */
 .doc-figure-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -721,7 +630,7 @@ pre code {
   }
 }
 
-/* Video Container Styles */
+/* * Video Container Styles */
 .video-container {
   position: relative;
   width: 100%;
