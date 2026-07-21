@@ -1900,7 +1900,7 @@ class PHPMailer
         //This sets the SMTP envelope sender which gets turned into a return-path header by the receiver
         //A space after `-f` is optional, but there is a long history of its presence
         //causing problems, so we don't use one
-        //Exim docs: https://www.exim.org/exim-html-current/doc/html/spec_html/ch-the_exim_command_line.html
+        //Exim docs: https://www.exim.org/exim-html-current/doc/page/spec_html/ch-the_exim_command_line.html
         //Sendmail docs: https://www.sendmail.org/~ca/email/man/sendmail.html
         //Example problem: https://www.drupal.org/node/1057954
 
@@ -2102,7 +2102,7 @@ class PHPMailer
         //This sets the SMTP envelope sender which gets turned into a return-path header by the receiver
         //A space after `-f` is optional, but there is a long history of its presence
         //causing problems, so we don't use one
-        //Exim docs: https://www.exim.org/exim-html-current/doc/html/spec_html/ch-the_exim_command_line.html
+        //Exim docs: https://www.exim.org/exim-html-current/doc/page/spec_html/ch-the_exim_command_line.html
         //Sendmail docs: https://www.sendmail.org/~ca/email/man/sendmail.html
         //Example problem: https://www.drupal.org/node/1057954
         //CVE-2016-10033, CVE-2016-10045: Don't pass -f if characters will be escaped.

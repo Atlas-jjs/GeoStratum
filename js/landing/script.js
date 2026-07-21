@@ -176,7 +176,7 @@ function initAuthUI() {
   const headerContainer = document.getElementById("auth-header-container");
   const heroCtaContainer = document.querySelector(".hero-cta");
   const secondCtaContainer = document.querySelector(".cta-band .hero-cta");
-  
+
   let resetEmailValue = "";
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -197,11 +197,11 @@ function initAuthUI() {
   function clearValidationErrors() {
     if (!modal) return;
     const inputs = modal.querySelectorAll("input");
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       input.classList.remove("invalid-field");
     });
     const errorMsgs = modal.querySelectorAll(".auth-error-msg");
-    errorMsgs.forEach(err => {
+    errorMsgs.forEach((err) => {
       err.textContent = "";
       err.style.display = "none";
     });
@@ -210,7 +210,7 @@ function initAuthUI() {
   function attachInputClearHandlers() {
     if (!modal) return;
     const inputs = modal.querySelectorAll("input");
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       input.addEventListener("input", () => {
         input.classList.remove("invalid-field");
       });
@@ -250,7 +250,7 @@ function initAuthUI() {
     } else if (mode === "reset-success") {
       cardResetSuccess.classList.remove("hidden");
     }
-    
+
     clearValidationErrors();
     initIcons();
   }
@@ -269,10 +269,10 @@ function initAuthUI() {
     .addEventListener("click", closeModal);
   document
     .getElementById("btn-close-reset-verify")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
   document
     .getElementById("btn-close-reset-success")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
 
   // Close modal on click outside card
   modal.addEventListener("click", (e) => {
@@ -282,19 +282,21 @@ function initAuthUI() {
   });
 
   // Bind toggle links
-  document.getElementById("link-to-register").addEventListener("click", (e) => {
-    e.preventDefault();
-    showCard("register");
-  });
-  document.getElementById("link-to-reset").addEventListener("click", (e) => {
+  document
+    .getElementById("link-to-register")
+    ?.addEventListener("click", (e) => {
+      e.preventDefault();
+      showCard("register");
+    });
+  document.getElementById("link-to-reset")?.addEventListener("click", (e) => {
     e.preventDefault();
     showCard("reset-request");
   });
-  document.getElementById("link-to-login").addEventListener("click", (e) => {
+  document.getElementById("link-to-login")?.addEventListener("click", (e) => {
     e.preventDefault();
     showCard("login");
   });
-  
+
   // Bind class-based link-to-login elements
   document.querySelectorAll(".link-to-login").forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -306,7 +308,7 @@ function initAuthUI() {
   // Success modal Sign In button
   document
     .getElementById("btn-reset-success-signin")
-    .addEventListener("click", (e) => {
+    ?.addEventListener("click", (e) => {
       e.preventDefault();
       showCard("login");
     });
@@ -326,9 +328,33 @@ function initAuthUI() {
       errorEl.style.display = "none";
 
       let valid = true;
-      if (!validateInput(passwordEl, passwordEl.value.trim() !== "", "Password is required.", errorEl)) valid = false;
-      if (!validateInput(emailEl, emailEl.value.trim() !== "", "Email address is required.", errorEl)) valid = false;
-      else if (!validateInput(emailEl, emailRegex.test(emailEl.value.trim()), "Please enter a valid email address.", errorEl)) valid = false;
+      if (
+        !validateInput(
+          passwordEl,
+          passwordEl.value.trim() !== "",
+          "Password is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      if (
+        !validateInput(
+          emailEl,
+          emailEl.value.trim() !== "",
+          "Email address is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      else if (
+        !validateInput(
+          emailEl,
+          emailRegex.test(emailEl.value.trim()),
+          "Please enter a valid email address.",
+          errorEl,
+        )
+      )
+        valid = false;
 
       if (!valid) return;
 
@@ -350,22 +376,69 @@ function initAuthUI() {
       e.preventDefault();
       const emailEl = document.getElementById("register-email");
       const passwordEl = document.getElementById("register-password");
-      const confirmPasswordEl = document.getElementById("register-confirm-password");
+      const confirmPasswordEl = document.getElementById(
+        "register-confirm-password",
+      );
       const errorEl = document.getElementById("register-error");
 
       errorEl.textContent = "";
       errorEl.style.display = "none";
 
       let valid = true;
-      if (!validateInput(confirmPasswordEl, confirmPasswordEl.value !== "", "Confirm Password is required.", errorEl)) valid = false;
-      if (!validateInput(passwordEl, passwordEl.value !== "", "Password is required.", errorEl)) valid = false;
-      else if (!validateInput(passwordEl, passwordEl.value.length >= 6, "Password must be at least 6 characters long.", errorEl)) valid = false;
-      
-      if (!validateInput(emailEl, emailEl.value.trim() !== "", "Email address is required.", errorEl)) valid = false;
-      else if (!validateInput(emailEl, emailRegex.test(emailEl.value.trim()), "Please enter a valid email address.", errorEl)) valid = false;
+      if (
+        !validateInput(
+          confirmPasswordEl,
+          confirmPasswordEl.value !== "",
+          "Confirm Password is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      if (
+        !validateInput(
+          passwordEl,
+          passwordEl.value !== "",
+          "Password is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      else if (
+        !validateInput(
+          passwordEl,
+          passwordEl.value.length >= 6,
+          "Password must be at least 6 characters long.",
+          errorEl,
+        )
+      )
+        valid = false;
+
+      if (
+        !validateInput(
+          emailEl,
+          emailEl.value.trim() !== "",
+          "Email address is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      else if (
+        !validateInput(
+          emailEl,
+          emailRegex.test(emailEl.value.trim()),
+          "Please enter a valid email address.",
+          errorEl,
+        )
+      )
+        valid = false;
 
       if (valid && passwordEl.value !== confirmPasswordEl.value) {
-        validateInput(confirmPasswordEl, false, "Passwords do not match.", errorEl);
+        validateInput(
+          confirmPasswordEl,
+          false,
+          "Passwords do not match.",
+          errorEl,
+        );
         valid = false;
       }
 
@@ -394,8 +467,24 @@ function initAuthUI() {
       errorEl.style.display = "none";
 
       let valid = true;
-      if (!validateInput(emailEl, emailEl.value.trim() !== "", "Email address is required.", errorEl)) valid = false;
-      else if (!validateInput(emailEl, emailRegex.test(emailEl.value.trim()), "Please enter a valid email address.", errorEl)) valid = false;
+      if (
+        !validateInput(
+          emailEl,
+          emailEl.value.trim() !== "",
+          "Email address is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      else if (
+        !validateInput(
+          emailEl,
+          emailRegex.test(emailEl.value.trim()),
+          "Please enter a valid email address.",
+          errorEl,
+        )
+      )
+        valid = false;
 
       if (!valid) return;
 
@@ -403,11 +492,16 @@ function initAuthUI() {
       showCard("reset-verify");
 
       // Fire OTP email in the background
-      sendOtp(emailEl.value.trim()).then(() => {
-        showToast("OTP code sent to your email address.", "success");
-      }).catch((err) => {
-        showToast(err.message || "Failed to send OTP. Please try again.", "error");
-      });
+      sendOtp(emailEl.value.trim())
+        .then(() => {
+          showToast("OTP code sent to your email address.", "success");
+        })
+        .catch((err) => {
+          showToast(
+            err.message || "Failed to send OTP. Please try again.",
+            "error",
+          );
+        });
 
       resetEmailValue = emailEl.value.trim();
     });
@@ -419,29 +513,80 @@ function initAuthUI() {
       e.preventDefault();
       const otpEl = document.getElementById("reset-otp");
       const newPasswordEl = document.getElementById("reset-new-password");
-      const confirmPasswordEl = document.getElementById("reset-confirm-password");
+      const confirmPasswordEl = document.getElementById(
+        "reset-confirm-password",
+      );
       const errorEl = document.getElementById("reset-verify-error");
 
       errorEl.textContent = "";
       errorEl.style.display = "none";
 
       let valid = true;
-      if (!validateInput(confirmPasswordEl, confirmPasswordEl.value !== "", "Confirm New Password is required.", errorEl)) valid = false;
-      if (!validateInput(newPasswordEl, newPasswordEl.value !== "", "New Password is required.", errorEl)) valid = false;
-      else if (!validateInput(newPasswordEl, newPasswordEl.value.length >= 6, "Password must be at least 6 characters long.", errorEl)) valid = false;
-      
-      if (!validateInput(otpEl, otpEl.value.trim() !== "", "OTP is required.", errorEl)) valid = false;
-      else if (!validateInput(otpEl, /^\d{6}$/.test(otpEl.value.trim()), "OTP must be a 6-digit number.", errorEl)) valid = false;
+      if (
+        !validateInput(
+          confirmPasswordEl,
+          confirmPasswordEl.value !== "",
+          "Confirm New Password is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      if (
+        !validateInput(
+          newPasswordEl,
+          newPasswordEl.value !== "",
+          "New Password is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      else if (
+        !validateInput(
+          newPasswordEl,
+          newPasswordEl.value.length >= 6,
+          "Password must be at least 6 characters long.",
+          errorEl,
+        )
+      )
+        valid = false;
+
+      if (
+        !validateInput(
+          otpEl,
+          otpEl.value.trim() !== "",
+          "OTP is required.",
+          errorEl,
+        )
+      )
+        valid = false;
+      else if (
+        !validateInput(
+          otpEl,
+          /^\d{6}$/.test(otpEl.value.trim()),
+          "OTP must be a 6-digit number.",
+          errorEl,
+        )
+      )
+        valid = false;
 
       if (valid && newPasswordEl.value !== confirmPasswordEl.value) {
-        validateInput(confirmPasswordEl, false, "Passwords do not match.", errorEl);
+        validateInput(
+          confirmPasswordEl,
+          false,
+          "Passwords do not match.",
+          errorEl,
+        );
         valid = false;
       }
 
       if (!valid) return;
 
       try {
-        await resetPassword(resetEmailValue, otpEl.value.trim(), newPasswordEl.value);
+        await resetPassword(
+          resetEmailValue,
+          otpEl.value.trim(),
+          newPasswordEl.value,
+        );
         showCard("reset-success");
       } catch (err) {
         errorEl.textContent = err.message;
@@ -456,7 +601,7 @@ function initAuthUI() {
     if (state.loggedIn) {
       headerContainer.innerHTML = `
         <div class="auth-user-pill">
-          <span class="user-greeting">Greetings, <strong>${state.user.email}</strong></span>
+          <span class="user-greeting"><strong>${state.user.email}</strong></span>
           <button id="btn-logout" class=" btn-outline btn-logout-nav" title="Log Out">
             <i data-lucide="log-out"></i>
             <span>Sign Out</span>
@@ -483,13 +628,13 @@ function initAuthUI() {
     // 2. Render Hero & Band CTA buttons
     const ctaHtml = state.loggedIn
       ? `
-        <a class="btn btn-primary" href="map.html" rel="noopener">
+        <a class="btn btn-primary" href="page/map.html" rel="noopener">
           Go to Map
           <i data-lucide="arrow-up-right"></i>
         </a>
       `
       : `
-        <a class="btn btn-primary" href="map.html" rel="noopener">
+        <a class="btn btn-primary" href="page/map.html" rel="noopener">
           Launch the Map
           <i data-lucide="arrow-up-right"></i>
         </a>

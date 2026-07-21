@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="../" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoStratum | User Manual and Documentation</title>
+    <meta
+      name="description"
+      content="Comprehensive user manual and technical documentation for the GeoStratum Cordillera Land and Resource Profile application."
+    />
+    <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/manual.css" />
+  </head>
+  <body>
+    <!-- * Topbar Header -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="index.html" class="brand">
+          <img src="res/denr_logo.png" alt="DENR CAR logo" />
+          <span class="brand-text">
+            <span class="brand-eyebrow">Republic of the Philippines</span>
+            <span class="brand-title">GeoStratum Documentation</span>
+            <span class="brand-sub">Cordillera Administrative Region</span>
+          </span>
+        </a>
+        <div class="nav-actions">
+          <a href="page/map.html" class="btn btn-primary">
+            <i data-lucide="map"></i>
+            <span>Return to Map</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- * Hero Title -->
+    <section class="manual-hero">
+      <h1>GeoStratum User Manual</h1>
+      <p>
+        A comprehensive guide to interactive GIS mapping, layer configurations,
+        spatial queries, and system limitations.
+      </p>
+    </section>
+
+    <!-- * Page Layout Grid -->
+    <div class="layout-container">
+      <!-- * Sidebar Navigation -->
+      <aside class="sidebar">
+        <nav class="sidebar-nav" id="sidebar-nav">
+          <span class="sidebar-heading">Getting Started</span>
+          <a href="#welcome" class="nav-link active">
+            <i data-lucide="info"></i>
+            <span>Introduction</span>
+          </a>
+          <a href="#quickstart" class="nav-link">
+            <i data-lucide="compass"></i>
+            <span>Quick Start Guide</span>
+          </a>
+          <a href="#video-tutorial" class="nav-link">
+            <i data-lucide="play-circle"></i>
+            <span>Video Tutorial</span>
+          </a>
+
+          <span class="sidebar-heading">Feature Details</span>
+          <a href="#layers" class="nav-link">
+            <i data-lucide="layers"></i>
+            <span>Managing Map Layers</span>
+          </a>
+          <a href="#queries" class="nav-link">
+            <i data-lucide="binary"></i>
+            <span>Overlapping Queries</span>
+          </a>
+          <a href="#imports" class="nav-link">
+            <i data-lucide="upload-cloud"></i>
+            <span>Importing Datasets</span>
+          </a>
+          <a href="#auth" class="nav-link">
+            <i data-lucide="shield-check"></i>
+            <span>Accounts and Sync</span>
+          </a>
+          <a href="#exports" class="nav-link">
+            <i data-lucide="camera"></i>
+            <span>Screenshots and Export</span>
+          </a>
+
+          <span class="sidebar-heading">Technical Specs</span>
+          <a href="#limitations" class="nav-link">
+            <i data-lucide="alert-triangle"></i>
+            <span>System Limitations</span>
+          </a>
+          <a href="#faq" class="nav-link">
+            <i data-lucide="help-circle"></i>
+            <span>Troubleshooting FAQ</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- * Main Documentation Content -->
+      <main class="doc-content">
+        <!-- * Welcome Section -->
+        <section id="welcome" class="doc-section">
+          <h2><i data-lucide="info"></i> Introduction and Overview</h2>
+          <p>
+            Welcome to the <strong>GeoStratum</strong> system manual. GeoStratum
+            is an interactive, browser-based geographic information system (GIS)
+            designed specifically for the
+            <strong
+              >Department of Environment and Natural Resources - Cordillera
+              Administrative Region (DENR-CAR)</strong
+            >.
+          </p>
+          <p>
+            The application consolidates land cover, land classification,
+            biophysical profiles, hazard susceptibility, and cadastral
+            boundaries across the six Cordillera provinces (<strong
+              >Abra, Apayao, Benguet, Ifugao, Kalinga, and Mountain
+              Province</strong
+            >). It provides land-use planners, research teams, and environmental
+            managers with access to overlapping spatial analysis metrics on the
+            fly.
+          </p>
+
+          <figure class="doc-figure">
+            <img
+              src="res/manual/map_overview.png"
+              alt="GeoStratum full map interface overview showing the Cordillera Administrative Region"
+              loading="lazy"
+            />
+            <figcaption class="doc-figcaption">
+              <i data-lucide="image"></i>
+              Full map interface showing the Cordillera Administrative Region
+              with active boundary layers.
+            </figcaption>
+          </figure>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i data-lucide="check-circle-2"></i></div>
+            <div class="callout-body">
+              <h4>Objective</h4>
+              <p>
+                To eliminate data silos by combining national agency data sets
+                (NAMRIA) and local land records into a single, cohesive spatial
+                interface with client-side analytical calculations.
+              </p>
+            </div>
+          </div>
+
+          <div class="manual-grid">
+            <div class="manual-card">
+              <div class="manual-card-icon"><i data-lucide="combine"></i></div>
+              <h4 class="manual-card-title">Dual-Source Directory</h4>
+              <p class="manual-card-text">
+                Compare official national data repository layers side-by-side
+                with local cadastral boundary maps.
+              </p>
+            </div>
+            <div class="manual-card">
+              <div class="manual-card-icon">
+                <i data-lucide="pie-chart"></i>
+              </div>
+              <h4 class="manual-card-title">Spatial Intersections</h4>
+              <p class="manual-card-text">
+                Generate instant intersection charts showing overlapping
+                classifications and hazard risk indices.
+              </p>
+            </div>
+            <div class="manual-card">
+              <div class="manual-card-icon"><i data-lucide="lock"></i></div>
+              <h4 class="manual-card-title">Secured Cloud Sync</h4>
+              <p class="manual-card-text">
+                Upload custom layers securely. Registered profiles synchronize
+                geo-assets directly with the database.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Quick Start Guide -->
+        <section id="quickstart" class="doc-section">
+          <h2><i data-lucide="compass"></i> Quick Start Guide</h2>
+          <p>
+            Getting started with GeoStratum is simple. The system runs fully
+            inside modern browsers, requiring no external GIS plug-ins. Follow
+            these quick steps to explore the region:
+          </p>
+          <ol>
+            <li>
+              <strong>Navigate the Map:</strong> Left-click and drag the map
+              surface to pan. Use your mouse scroll wheel or the zoom buttons
+              (<code>+</code>/<code>-</code>) on the map interface to adjust the
+              view level.
+            </li>
+            <li>
+              <strong>Change the Basemap:</strong> Hover or click on the basemap
+              switcher tab in the top-right corner. You can select between
+              <strong>Satellite</strong> (imagery),
+              <strong>Hybrid</strong> (labels and imagery),
+              <strong>Open Street</strong> (standard road maps), or
+              <strong>Topography</strong> (elevation contours).
+            </li>
+            <li>
+              <strong>Locate Controls:</strong> Click the gear icon floating
+              button in the bottom-middle of the screen to reveal the central
+              <strong>Layers Control Dock</strong>.
+            </li>
+            <li>
+              <strong>Inspect a Feature:</strong> Click on any provincial
+              boundary, municipal shape, or hazard zone to select it. The
+              <strong>Feature Details Panel</strong> will slide out in the
+              top-left showing metadata and statistical computations.
+            </li>
+          </ol>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/zoom-navigation_and_map-controls.png"
+                  alt="Zoom navigation controls and map controls trigger button"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                Zoom controls (top-left) and the floating gear trigger
+                (bottom-center) to open the map controls dock.
+              </figcaption>
+            </figure>
+
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/manual_and_basemap.png"
+                  alt="Manual button and basemap switcher at the top-right of the map"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                The Manual button and Basemap Switcher are located together in
+                the top-right corner of the map.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="callout callout-tip">
+            <div class="callout-icon"><i data-lucide="lightbulb"></i></div>
+            <div class="callout-body">
+              <h4>Pro Tip</h4>
+              <p>
+                Double-clicking on any boundary zoom-fits the screen viewport
+                automatically to that specific feature bounds.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Video Tutorial Section -->
+        <section id="video-tutorial" class="doc-section">
+          <h2><i data-lucide="play-circle"></i> Video Tutorial Session</h2>
+          <p>
+            Watch this quick video walk-through to see how to navigate
+            GeoStratum, import layers, and analyze data in real time:
+          </p>
+          <div class="video-container">
+            <video controls poster="res/manual/map_overview.png">
+              <source src="res/manual/video_tutorial.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="callout callout-info">
+            <div class="callout-icon"><i data-lucide="info"></i></div>
+            <div class="callout-body">
+              <h4>Video Session Info</h4>
+              <p>
+                To view the video in full screen, click the full-screen button
+                in the video controls bar. If the video fails to load, verify
+                that your recorded session video file is named
+                <code>video_tutorial.mp4</code> and has been placed inside the
+                <code>res/manual/</code> directory.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Managing Map Layers -->
+        <section id="layers" class="doc-section">
+          <h2><i data-lucide="layers"></i> Managing Map Layers</h2>
+          <p>
+            GeoStratum groups geospatial layers into two principal categories
+            accessible via the switcher tabs at the top of the Map Controls
+            panel:
+          </p>
+          <ul>
+            <li>
+              <strong>NAMRIA Layers:</strong> Official national environmental
+              datasets, including Land Classification (forestland vs. alienable
+              and disposable land), Biophysical Profiles (slopes, soil erosion),
+              and Hazard Vulnerabilities (fire, landslide, flood
+              susceptibility).
+            </li>
+            <li>
+              <strong>Cadastre Layers:</strong> Localized municipal parcel
+              boundaries and tenure files (e.g. National Greening Program
+              regions, Tenurial Instruments).
+            </li>
+          </ul>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/panels_overview.png"
+                  alt="Layer control panels showing NAMRIA and Cadastre tabs"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                Layer control panels with the NAMRIA and Cadastre panel switcher
+                tabs at the top.
+              </figcaption>
+            </figure>
+
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/single_layer.png"
+                  alt="Single layer control row showing checkbox, color picker, opacity, and weight controls"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                A single layer row showing the visibility toggle, color picker,
+                opacity slider, and line weight control.
+              </figcaption>
+            </figure>
+          </div>
+
+          <p>
+            Inside either tab, you can manipulate individual layers using the
+            following control knobs:
+          </p>
+          <ul>
+            <li>
+              <strong>Checkbox:</strong> Toggles layer visibility on/off. Green
+              checked boxes indicate active layers.
+            </li>
+            <li>
+              <strong>Color Picker:</strong> Click the color circle to pick a
+              custom rendering hue for the layer's polygons.
+            </li>
+            <li>
+              <strong>Opacity Slider:</strong> Slide left or right to change
+              transparency levels (from 0% invisible to 100% solid color).
+            </li>
+            <li>
+              <strong>Line Weight:</strong> Enter or click numbers to change the
+              outline pixel thickness for layer boundaries.
+            </li>
+          </ul>
+
+          <figure class="doc-figure">
+            <img
+              src="res/manual/map_overview_selected-layers.png"
+              alt="Map view with multiple active layers rendered simultaneously"
+              loading="lazy"
+            />
+            <figcaption class="doc-figcaption">
+              <i data-lucide="image"></i>
+              Map view showing multiple active layers overlaid simultaneously
+              across the Cordillera region.
+            </figcaption>
+          </figure>
+
+          <figure class="doc-figure">
+            <img
+              src="res/manual/map_overview_municipal-layer.png"
+              alt="Map view with CAD municipality boundary layer active"
+              loading="lazy"
+            />
+            <figcaption class="doc-figcaption">
+              <i data-lucide="image"></i>
+              Municipal boundary layer rendered across the region, revealing
+              detailed local administrative boundaries.
+            </figcaption>
+          </figure>
+
+          <div class="callout callout-info">
+            <div class="callout-icon"><i data-lucide="sliders"></i></div>
+            <div class="callout-body">
+              <h4>Layer Rendering Rationale</h4>
+              <p>
+                Modifying colors and opacities is computed immediately on active
+                client-side vector geometries. It does not re-fetch datasets
+                from the server, keeping interactions fluid.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Overlapping Queries -->
+        <section id="queries" class="doc-section">
+          <h2><i data-lucide="binary"></i> Overlapping Spatial Queries</h2>
+          <p>
+            When you click any polygon on the map (for example, a municipal
+            boundary in Abra), GeoStratum runs a real-time intersection query.
+          </p>
+          <p>
+            The system takes the clicked polygon geometry, cross-references it
+            with all other currently active layers, and calculates the
+            overlapping area.
+          </p>
+          <h3>How to analyze overlapping area:</h3>
+          <ol>
+            <li>
+              Enable the layers you want to inspect (e.g., check both
+              <i>CAD Municipalities</i> and <i>Landslide Susceptibility</i>).
+            </li>
+            <li>Click on the municipality of interest on the map.</li>
+            <li>
+              Look at the <strong>Feature Details Panel</strong> on the left.
+            </li>
+            <li>
+              Under the section <strong>"Area by overlapping layer"</strong>,
+              you will see a percentage-based breakdown and area values in
+              hectares (ha) for each risk tier (Low, Moderate, High, Severe)
+              within that municipality's borders.
+            </li>
+          </ol>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/details-panel.png"
+                  alt="Feature Details Panel showing attribute data for a selected boundary"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                The Feature Details Panel showing region attributes and computed
+                area after clicking a boundary.
+              </figcaption>
+            </figure>
+
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/details-panel_overlapping-layers.png"
+                  alt="Feature Details Panel showing overlapping layer area breakdown chart"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                Overlapping layer breakdown — area percentages and hectare
+                values per classification type within the selected boundary.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="callout callout-warning">
+            <div class="callout-icon"><i data-lucide="alert-triangle"></i></div>
+            <div class="callout-body">
+              <h4>Attention</h4>
+              <p>
+                Intersection calculations are only triggered for layers that are
+                actively turned ON. Make sure layers you want to query are
+                checked on in the panel before selecting the boundary.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Importing Custom Datasets -->
+        <section id="imports" class="doc-section">
+          <h2><i data-lucide="upload-cloud"></i> Importing Custom Datasets</h2>
+          <p>
+            GeoStratum permits researchers to bring in external geospatial
+            vectors to overlay on top of existing Cordillera basemaps.
+          </p>
+          <h3>Supported Formats</h3>
+          <ul>
+            <li>
+              <strong>GeoJSON:</strong> Single text files containing JSON
+              spatial coordinate features (ending in <code>.geojson</code> or
+              <code>.json</code>).
+            </li>
+            <li>
+              <strong>Zipped Shapefiles:</strong> Compressed ZIP files
+              containing Esri shapefile files (must contain at least
+              <code>.shp</code>, <code>.dbf</code>, and <code>.shx</code> files;
+              <code>.prj</code> is recommended for projection matching).
+            </li>
+          </ul>
+          <h3>Upload Workflow</h3>
+          <ol>
+            <li>
+              Open the Map Controls Panel and click on the
+              <strong>Import</strong> tab.
+            </li>
+            <li>
+              Click the dashed upload zone or drag-and-drop your file onto it.
+            </li>
+            <li>
+              Wait for the import parser to process coordinates. Once
+              successful, the layer is added to the
+              <strong>Imported Layers</strong> list.
+            </li>
+            <li>
+              You can assign a customized layer name, adjust outline thickness,
+              customize color palettes, toggle layer visibility, or remove it
+              entirely.
+            </li>
+          </ol>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/import-tab_empty.png"
+                  alt="Import tab showing the empty file drag-and-drop upload zone"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                The Import tab with the upload zone ready — click or
+                drag-and-drop your GeoJSON or zipped Shapefile here.
+              </figcaption>
+            </figure>
+
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/import-tab_not-empty.png"
+                  alt="Import tab with a successfully uploaded custom layer in the list"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                After a successful upload — the custom layer appears in the list
+                with rename, styling, and removal controls.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- * Accounts & Cloud Sync -->
+        <section id="auth" class="doc-section">
+          <h2>
+            <i data-lucide="shield-check"></i> Account Management and Database
+            Persistence
+          </h2>
+          <p>
+            While guest users can upload vector layers, these layers are stored
+            locally in the browser's temporary memory (session memory) and are
+            discarded once the tab is closed.
+          </p>
+          <p>
+            To keep custom layers permanently accessible across multiple
+            devices, users should register a free account.
+          </p>
+          <h3>Profile Sync Features:</h3>
+          <ul>
+            <li>
+              <strong>Persistent Storage:</strong> Any file uploaded in the
+              <i>Import</i> tab is automatically zipped and sent to the secure
+              SQL database (<code>geostratum_imported_layers</code> table).
+            </li>
+            <li>
+              <strong>Device Syncing:</strong> Simply sign in on another
+              computer to immediately load your custom vector boundaries into
+              your map layout.
+            </li>
+            <li>
+              <strong>Secure Sign In/Out:</strong> Clicking the user profile
+              button in the left navigation bar allows users to securely log in,
+              register, sign out, or submit an email OTP (One-Time Password)
+              request to recover credentials.
+            </li>
+          </ul>
+        </section>
+
+        <!-- * Screenshots & Export -->
+        <section id="exports" class="doc-section">
+          <h2>
+            <i data-lucide="camera"></i> Screenshots and High-Fidelity Exports
+          </h2>
+          <p>
+            GeoStratum provides a high-resolution export facility designed to
+            easily generate map figures for inclusion in research reports or
+            planning slide decks.
+          </p>
+          <h3>Capture Walkthrough:</h3>
+          <ol>
+            <li>
+              Click on the feature you wish to export to open the details card.
+            </li>
+            <li>
+              Click the <strong>Camera Icon</strong> in the top-right corner of
+              the Feature Details Panel.
+            </li>
+            <li>
+              A preview modal appears, displaying the cropped boundary and the
+              corresponding data tables.
+            </li>
+            <li>
+              Select the desired file export extension:
+              <ul>
+                <li>
+                  <strong>PNG:</strong> Standard high-fidelity lossless format,
+                  ideal for digital documentation.
+                </li>
+                <li>
+                  <strong>JPEG:</strong> Standard compressed format, best for
+                  email sharing.
+                </li>
+                <li>
+                  <strong>WEBP:</strong> Modern high-compression format,
+                  optimized for web pages.
+                </li>
+                <li>
+                  <strong>TIFF:</strong> Raw georeferenced-friendly image format
+                  (encoded via UTIF.js library).
+                </li>
+              </ul>
+            </li>
+            <li>Click <strong>Download</strong> to save the file locally.</li>
+          </ol>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/screenshot_button.png"
+                  alt="Camera screenshot button inside the Feature Details Panel header"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                The camera icon button in the Feature Details Panel header —
+                click it to begin a screenshot capture.
+              </figcaption>
+            </figure>
+
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/screenshot_preview.png"
+                  alt="Screenshot preview modal showing the captured details card and download options"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                The Screenshot Preview modal — choose a file format and click
+                Download to save the capture locally.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- * System Limitations -->
+        <section id="limitations" class="doc-section">
+          <h2>
+            <i data-lucide="alert-triangle"></i> System Limitations and
+            Constraints
+          </h2>
+          <p>
+            Users must understand the technical constraints of the client-side
+            design. Here are the core limitations:
+          </p>
+
+          <div class="limitation-item">
+            <span class="limitation-badge">PERFORMANCE</span>
+            <div class="limitation-info">
+              <h3>Client-Side Rendering Overhead</h3>
+              <p>
+                GeoStratum renders layers as SVG/Canvas vectors directly in the
+                browser window. Loading extremely large shapefiles (e.g.
+                &gt;10MB or containing more than 20,000 polygons) can consume
+                significant system RAM. This may lead to browser lag, jerky
+                panning, or browser tab crashes on lower-end devices.
+              </p>
+            </div>
+          </div>
+
+          <div class="limitation-item">
+            <span class="limitation-badge">CALCULATIONS</span>
+            <div class="limitation-info">
+              <h3>Planar (2D) Geometry Calculations</h3>
+              <p>
+                All spatial intersection calculations (such as overlap area of
+                biophysical profiles within municipal limits) are computed via
+                Turf.js using planar 2D geometries on the WGS84 ellipsoid. It
+                does not adjust for the Cordillera's rugged mountain terrain
+                elevation profiles. The calculated area may differ slightly from
+                the true 3D surface slope area.
+              </p>
+            </div>
+          </div>
+
+          <div class="limitation-item">
+            <span class="limitation-badge">COORDINATES</span>
+            <div class="limitation-info">
+              <h3>Client-Side Projection Matching</h3>
+              <p>
+                The mapping interface operates natively in Web Mercator
+                projection (EPSG:3857). Shapefiles in local coordinate
+                references (e.g., PRS92 / UTM Zone 51N - EPSG:3125) are
+                reprojected client-side using the Proj4js library. Slight shift
+                errors (1-3 meters) may occur due to datum transformation
+                approximations.
+              </p>
+            </div>
+          </div>
+
+          <div class="limitation-item">
+            <span class="limitation-badge">CAPABILITIES</span>
+            <div class="limitation-info">
+              <h3>No Vector Editing Capabilities</h3>
+              <p>
+                GeoStratum is primarily an analytical and visualization catalog.
+                Users cannot split polygons, digitize new paths, edit feature
+                attributes, or repair topological errors (like sliver polygons
+                or boundary gaps) within the interface.
+              </p>
+            </div>
+          </div>
+
+          <div class="limitation-item">
+            <span class="limitation-badge">STORAGE</span>
+            <div class="limitation-info">
+              <h3>Guest Session Limits</h3>
+              <p>
+                If you are not logged into a verified account, custom layers are
+                saved only in local browser session storage. If you clear
+                cookies, open the map in an Incognito window, or refresh/close
+                the tab, all custom configurations and uploaded datasets will be
+                permanently lost.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- * Mobile Reference -->
+        <section id="mobile" class="doc-section">
+          <h2><i data-lucide="smartphone"></i> Mobile Layout</h2>
+          <p>
+            GeoStratum is fully responsive and adapts its interface for smaller
+            touchscreen devices. Below are references for how the key UI
+            elements appear on mobile viewports.
+          </p>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/map_overview_mobile.png"
+                  alt="Mobile view of the GeoStratum map interface"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                Mobile map view — the basemap dropdown and controls condense to
+                icon-only buttons for a clean small-screen layout.
+              </figcaption>
+            </figure>
+
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/panels_mobile.png"
+                  alt="Mobile view of the layer control panels"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                Mobile layer control panels — the panel dock spans full-width at
+                the bottom of the screen for easy touch access.
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="doc-figure-row">
+            <figure class="doc-figure">
+              <div class="doc-figure-media">
+                <img
+                  src="res/manual/details-panel_mobile.png"
+                  alt="Mobile view of the Feature Details Panel"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption class="doc-figcaption">
+                <i data-lucide="image"></i>
+                The Feature Details Panel on mobile — it slides in from the side
+                and uses a full-width layout for readability.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- * Troubleshooting FAQ -->
+        <section id="faq" class="doc-section">
+          <h2><i data-lucide="help-circle"></i> Troubleshooting FAQ</h2>
+          <p>
+            Below are answers to common questions and issues that may occur
+            while using the application:
+          </p>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-trigger">
+                <span>Why does my Shapefile upload fail with an error?</span>
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="faq-content">
+                <div class="faq-content-inner">
+                  Ensure that your Shapefile is compressed in a standard
+                  <code>.zip</code> file. The zip archive MUST contain the main
+                  files: <code>.shp</code> (geometry),
+                  <code>.dbf</code> (database attributes), and
+                  <code>.shx</code> (index). Files must not be nested inside
+                  folders within the ZIP file. Also, verify that the Shapefile
+                  isn't corrupted and has valid geometry vertices.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-trigger">
+                <span
+                  >The map panning is sluggish and choppy. How can I fix
+                  this?</span
+                >
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="faq-content">
+                <div class="faq-content-inner">
+                  Sluggish performance is usually caused by having too many
+                  high-resolution layers enabled simultaneously. Open the map
+                  controls panel and uncheck layers that you do not immediately
+                  need. Try using the Satellite or Open Street basemaps instead
+                  of Hybrid, and close other browser tabs to free up RAM.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-trigger">
+                <span
+                  >I requested a password reset OTP but haven't received the
+                  email.</span
+                >
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="faq-content">
+                <div class="faq-content-inner">
+                  First, check your Spam/Junk email folder. The OTP email is
+                  dispatched from the server via PHPMailer; check with your
+                  local IT department to ensure outgoing server connections are
+                  not blocked by firewall rules. If using a local development
+                  server (e.g. XAMPP on localhost), verify that the mail server
+                  configuration in <code>server/mail.php</code> is configured
+                  with valid SMTP credentials.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-trigger">
+                <span>Why are some calculation figures showing "No Data"?</span>
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="faq-content">
+                <div class="faq-content-inner">
+                  This happens if the active layer does not fully cover the
+                  boundary region of the clicked municipal shape. The
+                  overlapping engine only displays intersection results where
+                  native data actually exists within the target polygon.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-trigger">
+                <span
+                  >Can multiple users access and edit the same custom
+                  layer?</span
+                >
+                <i data-lucide="chevron-down"></i>
+              </button>
+              <div class="faq-content">
+                <div class="faq-content-inner">
+                  Currently, custom layer uploads are linked strictly to the
+                  user account that uploaded them. Collaborative shared maps are
+                  not supported in the current release. To share a layer, export
+                  your shapefile/GeoJSON and email it to the other user to
+                  upload on their account.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- * Lucide Icon script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/components/ui/manual.js"></script>
+  </body>
+</html>

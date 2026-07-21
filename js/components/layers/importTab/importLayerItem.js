@@ -205,7 +205,7 @@ function wireListItem(
 
 function escapeHtml(str) {
   return String(str)
-    .replace(/&/g, "&amp;")
+    .replace(/&/g, "and")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")

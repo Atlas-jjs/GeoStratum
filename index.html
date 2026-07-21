@@ -11,7 +11,7 @@
 
     <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon" />
 
-    <!-- Leaflet -->
+    <!-- * Leaflet -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-    <!-- * Top bar -->
+    <!-- * * Top bar -->
     <header class="topbar" id="topbar">
       <div class="topbar-inner wrap">
         <a href="#top" class="brand">
@@ -37,11 +37,10 @@
         </a>
 
         <div class="auth-header-container" id="auth-header-container"></div>
-
       </div>
     </header>
 
-    <!-- * Hero -->
+    <!-- * * Hero -->
     <section class="hero" id="top">
       <div
         id="hero-map"
@@ -61,7 +60,7 @@
           into a single regional profile.
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="map.html" rel="noopener">
+          <a class="btn btn-primary" href="page/map.html" rel="noopener">
             Launch the map
             <i data-lucide="arrow-up-right"></i>
           </a>
@@ -69,7 +68,7 @@
       </div>
     </section>
 
-    <!-- * What's on the map -->
+    <!-- * * What's on the map -->
     <section class="section" id="features">
       <div class="wrap">
         <div class="section-head reveal">
@@ -134,7 +133,7 @@
       </div>
     </section>
 
-    <!-- * Data catalog -->
+    <!-- * * Data catalog -->
     <section class="section" id="catalog">
       <div class="wrap">
         <div class="section-head reveal">
@@ -229,7 +228,7 @@
       </div>
     </section>
 
-    <!-- * Legend / classification -->
+    <!-- * * Legend / classification -->
     <section class="section legend-section" id="legend">
       <div class="wrap">
         <div class="legend-grid reveal">
@@ -417,7 +416,7 @@
       </div>
     </section>
 
-    <!-- * CTA -->
+    <!-- * * CTA -->
     <section class="cta-band">
       <div class="cta-topo" aria-hidden="true">
         <svg
@@ -459,7 +458,7 @@
             required.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="map.html" rel="noopener">
+            <a class="btn btn-primary" href="page/map.html" rel="noopener">
               Launch the map
               <i data-lucide="arrow-up-right"></i>
             </a>
@@ -535,9 +534,9 @@
       </div>
     </footer>
 
-    <!-- * Auth Modal Container -->
+    <!-- * * Auth Modal Container -->
     <div id="auth-modal" class="auth-modal-overlay hidden">
-      <!-- Login Card -->
+      <!-- * Login Card -->
       <div id="card-login" class="auth-card glass reveal-auth">
         <div class="auth-card-header">
           <h2>Sign In to GeoStratum</h2>
@@ -576,7 +575,7 @@
         </div>
       </div>
 
-      <!-- Register Card -->
+      <!-- * Register Card -->
       <div id="card-register" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Create Account</h2>
@@ -590,7 +589,7 @@
             <input
               type="email"
               id="register-email"
-              placeholder="employee@denr.gov.ph"
+              placeholder="example@example.com"
             />
           </div>
           <div class="form-group">
@@ -620,7 +619,7 @@
           </p>
         </div>
       </div>
-      <!-- Forgot Password Step 1: Request OTP -->
+      <!-- * Forgot Password Step 1: Request OTP -->
       <div id="card-reset-request" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Reset Password</h2>
@@ -654,7 +653,7 @@
         </div>
       </div>
 
-      <!-- Forgot Password Step 2: Verify OTP & Reset -->
+      <!-- * Forgot Password Step 2: Verify OTP & Reset -->
       <div id="card-reset-verify" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Check Your Email</h2>
@@ -710,7 +709,7 @@
         </div>
       </div>
 
-      <!-- Forgot Password Step 3: Success Modal -->
+      <!-- * Forgot Password Step 3: Success Modal -->
       <div id="card-reset-success" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Reset Successful</h2>
@@ -722,43 +721,19 @@
             <i data-lucide="x"></i>
           </button>
         </div>
-        <div
-          class="confirm-logout-body"
-          style="text-align: center; margin: 20px 0"
-        >
-          <div
-            class="ico"
-            style="
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 64px;
-              height: 64px;
-              border-radius: 50%;
-              background: rgba(16, 185, 129, 0.1);
-              color: var(--risk-low);
-              margin-bottom: 16px;
-            "
-          >
-            <i data-lucide="check-circle" style="width: 32px; height: 32px"></i>
+        <div class="auth-success-body">
+          <div class="auth-success-icon">
+            <i data-lucide="check-circle"></i>
           </div>
-          <p
-            style="
-              color: #f1f5f9;
-              font-size: 0.95rem;
-              line-height: 1.5;
-              margin-bottom: 24px;
-            "
-          >
+          <p class="auth-success-text">
             Your password has been reset successfully. You can now log in using
             your new credentials.
           </p>
           <button
             id="btn-reset-success-signin"
-            class="btn btn-primary"
-            style="width: 100%"
+            class="btn btn-primary auth-submit-btn"
           >
-            Sign In Now
+            Sign In
           </button>
         </div>
       </div>
@@ -770,7 +745,7 @@
       crossorigin=""
     ></script>
 
-    <!-- Lucide Icons -->
+    <!-- * Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script type="module" src="./js/landing/script.js"></script>

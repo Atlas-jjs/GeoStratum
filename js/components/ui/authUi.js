@@ -90,10 +90,10 @@ export function initMapAuthUI() {
 
   document
     .getElementById("btn-cancel-signout")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
   document
     .getElementById("btn-confirm-signout")
-    .addEventListener("click", () => {
+    ?.addEventListener("click", () => {
       closeModal();
       logoutUser().then(() => {
         window.location.reload();
@@ -102,19 +102,19 @@ export function initMapAuthUI() {
 
   document
     .getElementById("btn-close-login")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
   document
     .getElementById("btn-close-register")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
   document
     .getElementById("btn-close-reset-request")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
   document
     .getElementById("btn-close-reset-verify")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
   document
     .getElementById("btn-close-reset-success")
-    .addEventListener("click", closeModal);
+    ?.addEventListener("click", closeModal);
 
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
@@ -123,19 +123,19 @@ export function initMapAuthUI() {
   });
 
   // Toggles
-  document.getElementById("link-to-register").addEventListener("click", (e) => {
+  document.getElementById("link-to-register")?.addEventListener("click", (e) => {
     e.preventDefault();
     showCard("register");
   });
-  document.getElementById("link-to-reset").addEventListener("click", (e) => {
+  document.getElementById("link-to-reset")?.addEventListener("click", (e) => {
     e.preventDefault();
     showCard("reset-request");
   });
-  document.getElementById("link-to-login").addEventListener("click", (e) => {
+  document.getElementById("link-to-login")?.addEventListener("click", (e) => {
     e.preventDefault();
     showCard("login");
   });
-  
+
   // Bind class-based link-to-login elements
   document.querySelectorAll(".link-to-login").forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -147,7 +147,7 @@ export function initMapAuthUI() {
   // Success modal Sign In button
   document
     .getElementById("btn-reset-success-signin")
-    .addEventListener("click", (e) => {
+    ?.addEventListener("click", (e) => {
       e.preventDefault();
       showCard("login");
     });

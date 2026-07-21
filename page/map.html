@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <base href="../" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GeoStratum | Cordillera Land and Resource Profile</title>
     <meta
@@ -11,7 +12,7 @@
 
     <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon" />
 
-    <!-- * Leaflet CSS -->
+    <!-- * * Leaflet CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -19,11 +20,11 @@
       crossorigin=""
     />
 
-    <!-- * Custom CSS -->
+    <!-- * * Custom CSS -->
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
-    <!-- * Page Loading Overlay -->
+    <!-- * * Page Loading Overlay -->
     <div id="page-loader" class="page-loader">
       <div class="loader-content">
         <div class="loader-spinner"></div>
@@ -31,11 +32,11 @@
       </div>
     </div>
 
-    <!-- * Full-screen Map Container -->
+    <!-- * * Full-screen Map Container -->
     <div id="map"></div>
     <div class="sky-overlay"></div>
 
-    <!-- * Map Navigation Bar (Home & Auth) -->
+    <!-- * * Map Navigation Bar (Home & Auth) -->
     <div class="map-nav-bar" id="map-nav-bar">
       <a href="index.html" class="map-nav-btn" id="btn-home" title="Go to Home">
         <i data-lucide="home"></i>
@@ -45,10 +46,21 @@
       </button>
     </div>
 
-    <!-- * Basemap Switcher -->
+    <!-- * * Basemap Switcher -->
     <div id="basemap-switcher" class="leaflet-top leaflet-right">
       <div class="leaflet-control basemap-switcher">
-        <!-- Mobile -->
+        <a
+          href="page/manual.html"
+          class="map-manual-btn"
+          id="btn-manual"
+          title="View User Manual"
+          target="_blank"
+        >
+          <i data-lucide="book-open"></i>
+          <span>Manual</span>
+        </a>
+        <div class="switcher-divider"></div>
+        <!-- * Mobile -->
         <button class="bm-trigger">
           <span id="bm-current">Satellite</span>
           <i data-lucide="chevron-down"></i>
@@ -61,7 +73,7 @@
           <button data-basemap="topo">Topography</button>
         </div>
 
-        <!-- Desktop -->
+        <!-- * Desktop -->
         <div class="bm-tabs">
           <button class="bm-btn active" data-basemap="satellite">
             Satellite
@@ -73,9 +85,9 @@
       </div>
     </div>
 
-    <!-- * Entire NAMRIA and CADASTRE along with the Trigger Button -->
+    <!-- * * Entire NAMRIA and CADASTRE along with the Trigger Button -->
     <div class="panel-dock hidden" id="panel-dock">
-      <!-- * Panel Switcher -->
+      <!-- * * Panel Switcher -->
       <div id="panel-switcher" class="panel-switcher hidden">
         <button
           class="container-tab-btn"
@@ -96,11 +108,11 @@
       </div>
 
       <div class="panel-dock__panels">
-        <!-- * CADASTRE Controls Panel Container -->
+        <!-- * * CADASTRE Controls Panel Container -->
         <div id="cad-controls-container" class="cad-controls-container hidden">
-          <!-- Floating Expandable Control Panel -->
+          <!-- * Floating Expandable Control Panel -->
           <div id="cad-controls-panel" class="floating-card glass">
-            <!-- Tabs Headers -->
+            <!-- * Tabs Headers -->
             <div class="panel-tabs">
               <button class="tab-btn active" data-tab="layers">
                 <i data-lucide="layers"></i> Layers
@@ -110,14 +122,14 @@
               </button>
             </div>
 
-            <!-- Tab Contents -->
+            <!-- * Tab Contents -->
             <div class="panel-content">
-              <!-- Layers Tab — populated dynamically by panelLayerList.js -->
+              <!-- * Layers Tab — populated dynamically by panelLayerList.js -->
               <div class="tab-pane active" id="tab-layers">
                 <div id="cad-layer-list-container"></div>
               </div>
 
-              <!-- * Import Tab -->
+              <!-- * * Import Tab -->
               <div class="tab-pane" id="tab-import">
                 <div class="title">Import Custom Layer</div>
                 <p class="import-hint">
@@ -148,10 +160,10 @@
           </div>
         </div>
 
-        <!-- * NAMRIA Controls Panel Container -->
+        <!-- * * NAMRIA Controls Panel Container -->
         <div id="namria-controls-container">
           <div id="namria-controls-panel" class="floating-card glass">
-            <!-- Tabs Headers -->
+            <!-- * Tabs Headers -->
             <div class="panel-tabs">
               <button class="tab-btn active" data-tab="layers">
                 <i data-lucide="layers"></i> Layers
@@ -161,14 +173,14 @@
               </button>
             </div>
 
-            <!-- Tab Contents -->
+            <!-- * Tab Contents -->
             <div class="panel-content">
-              <!-- Layers Tab — populated dynamically by panelLayerList.js -->
+              <!-- * Layers Tab — populated dynamically by panelLayerList.js -->
               <div class="tab-pane active" id="tab-layers">
                 <div id="namria-layer-list-container"></div>
               </div>
 
-              <!-- * Import Tab -->
+              <!-- * * Import Tab -->
               <div class="tab-pane" id="tab-import">
                 <div class="title">Import Custom Layer</div>
                 <p class="import-hint">
@@ -201,14 +213,14 @@
       </div>
     </div>
 
-    <!-- * Floating Trigger Button (Center) -->
+    <!-- * * Floating Trigger Button (Center) -->
     <div class="controls-trigger-container">
       <button id="controls-trigger" class="glass" title="Toggle Map Controls">
         <i data-lucide="settings" id="trigger-icon"></i>
       </button>
     </div>
 
-    <!-- * Floating Details Panel (Top Left) -->
+    <!-- * * Floating Details Panel (Top Left) -->
     <div id="details-panel" class="floating-card glass hidden">
       <div class="details-icons">
         <button id="btn-screenshot" class="icon-btn" title="Take Screenshot">
@@ -223,14 +235,14 @@
         <h2 id="details-title">Feature Title</h2>
       </div>
       <div class="card-body" id="details-content">
-        <!-- Dynamic Properties Will Go Here -->
+        <!-- * Dynamic Properties Will Go Here -->
         <div class="empty-state">
           Click on any map boundary or feature to view detailed attributes.
         </div>
       </div>
     </div>
 
-    <!-- * Screenshot Preview Modal -->
+    <!-- * * Screenshot Preview Modal -->
     <div id="screenshot-preview-modal" class="hidden">
       <div class="screenshot-preview-card glass">
         <div class="screenshot-preview-header">
@@ -259,7 +271,7 @@
       </div>
     </div>
 
-    <!-- * Delete Confirmation Modal (imported/custom layers only) -->
+    <!-- * * Delete Confirmation Modal (imported/custom layers only) -->
     <div id="delete-confirm-modal" class="hidden">
       <div class="delete-confirm-card">
         <div class="delete-confirm-header">
@@ -291,8 +303,8 @@
       </div>
     </div>
 
-    <!-- * Duplicate Layer Name Toast -->
-    <!-- informational only — auto-renamed layers are non-destructive/reversible -->
+    <!-- * * Duplicate Layer Name Toast -->
+    <!-- * informational only — auto-renamed layers are non-destructive/reversible -->
     <div
       id="duplicate-name-toast"
       class="hidden"
@@ -303,9 +315,9 @@
       <span id="duplicate-name-toast-message"></span>
     </div>
 
-    <!-- * Auth Modal Container -->
+    <!-- * * Auth Modal Container -->
     <div id="auth-modal" class="auth-modal-overlay hidden">
-      <!-- Login Card -->
+      <!-- * Login Card -->
       <div id="card-login" class="auth-card glass reveal-auth">
         <div class="auth-card-header">
           <h2>Sign In to GeoStratum</h2>
@@ -344,7 +356,7 @@
         </div>
       </div>
 
-      <!-- Register Card -->
+      <!-- * Register Card -->
       <div id="card-register" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Create Account</h2>
@@ -358,7 +370,7 @@
             <input
               type="email"
               id="register-email"
-              placeholder="employee@denr.gov.ph"
+              placeholder="example@example.com"
             />
           </div>
           <div class="form-group">
@@ -389,7 +401,7 @@
         </div>
       </div>
 
-      <!-- Forgot Password Step 1: Request OTP -->
+      <!-- * Forgot Password Step 1: Request OTP -->
       <div id="card-reset-request" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Reset Password</h2>
@@ -423,7 +435,7 @@
         </div>
       </div>
 
-      <!-- Forgot Password Step 2: Verify OTP & Reset -->
+      <!-- * Forgot Password Step 2: Verify OTP & Reset -->
       <div id="card-reset-verify" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Check Your Email</h2>
@@ -480,7 +492,7 @@
         </div>
       </div>
 
-      <!-- Forgot Password Step 3: Success -->
+      <!-- * Forgot Password Step 3: Success -->
       <div id="card-reset-success" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Reset Successful</h2>
@@ -492,45 +504,24 @@
             <i data-lucide="x"></i>
           </button>
         </div>
-        <div class="confirm-logout-body" style="text-align: center; margin: 20px 0">
-          <div
-            class="ico"
-            style="
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 64px;
-              height: 64px;
-              border-radius: 50%;
-              background: rgba(16, 185, 129, 0.1);
-              color: var(--risk-low);
-              margin-bottom: 16px;
-            "
-          >
-            <i data-lucide="check-circle" style="width: 32px; height: 32px"></i>
+        <div class="auth-success-body">
+          <div class="auth-success-icon">
+            <i data-lucide="check-circle"></i>
           </div>
-          <p
-            style="
-              color: #f1f5f9;
-              font-size: 0.95rem;
-              line-height: 1.5;
-              margin-bottom: 24px;
-            "
-          >
+          <p class="auth-success-text">
             Your password has been reset successfully. You can now log in using
             your new credentials.
           </p>
           <button
             id="btn-reset-success-signin"
-            class="btn btn-primary"
-            style="width: 100%"
+            class="btn btn-primary auth-submit-btn"
           >
-            Sign In Now
+            Sign In
           </button>
         </div>
       </div>
 
-      <!-- * Sign Out Confirmation Card -->
+      <!-- * * Sign Out Confirmation Card -->
       <div id="card-confirm-logout" class="auth-card glass reveal-auth hidden">
         <div class="auth-card-header">
           <h2>Are you sure you want to sign out?</h2>
@@ -559,32 +550,32 @@
       </div>
     </div>
 
-    <!-- html2canvas -->
+    <!-- * html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <!-- UTIF.js (TIFF encoding for screenshot export) -->
+    <!-- * UTIF.js (TIFF encoding for screenshot export) -->
     <script src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js"></script>
 
-    <!-- Leaflet JS -->
+    <!-- * Leaflet JS -->
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
 
-    <!-- Proj4 JS for Coordinate Reference Systems conversions -->
+    <!-- * Proj4 JS for Coordinate Reference Systems conversions -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
 
-    <!-- Lucide Icons -->
+    <!-- * Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Shapefile parsing library shpjs -->
+    <!-- * Shapefile parsing library shpjs -->
     <script src="https://unpkg.com/shpjs@latest/dist/shp.js"></script>
 
-    <!-- Turf.js for spatial operations -->
+    <!-- * Turf.js for spatial operations -->
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
-    <!-- Main Application Logic -->
+    <!-- * Main Application Logic -->
     <script type="module" src="app.js"></script>
   </body>
 </html>
