@@ -628,13 +628,13 @@ function initAuthUI() {
     // 2. Render Hero & Band CTA buttons
     const ctaHtml = state.loggedIn
       ? `
-        <a class="btn btn-primary" href="page/map.html" rel="noopener">
+        <a class="btn btn-primary" href="pages/map.html" rel="noopener">
           Go to Map
           <i data-lucide="arrow-up-right"></i>
         </a>
       `
       : `
-        <a class="btn btn-primary" href="page/map.html" rel="noopener">
+        <a class="btn btn-primary" href="pages/map.html" rel="noopener">
           Launch the Map
           <i data-lucide="arrow-up-right"></i>
         </a>
