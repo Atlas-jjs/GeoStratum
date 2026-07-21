@@ -18,7 +18,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../core/db.php';
 
 // ─── CORS headers (same-origin only in production) ───────────────────────────
 header('Access-Control-Allow-Origin: *');

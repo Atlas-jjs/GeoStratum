@@ -22,7 +22,7 @@ declare(strict_types=1);
 ini_set('memory_limit', '-1');
 ini_set('max_execution_time', '0'); // Unlimited for batch import
 
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../core/db.php';
 
 // ─── Configuration ────────────────────────────────────────────────────────────
 

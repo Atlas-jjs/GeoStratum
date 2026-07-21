@@ -3,7 +3,7 @@ ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 session_start();
 
-require __DIR__ . '/db.php';
+require __DIR__ . '/../core/db.php';
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

@@ -6,7 +6,7 @@ function get_pdo(): PDO
         return $pdo;
     }
 
-    $config = require __DIR__ . '/config.php';
+    $config = require __DIR__ . '/../core/config.php';
 
     $dsn = sprintf(
         'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',

@@ -215,7 +215,7 @@ export function loadLayer(key) {
   }
 
   // Fetch GeoJSON from MySQL endpoint
-  const dbUrl = `server/geojson.php?path=${encodeURIComponent(layerInfo.url)}`;
+  const dbUrl = `server/layers/geojson.php?path=${encodeURIComponent(layerInfo.url)}`;
 
   fetch(dbUrl)
     .then((res) => {
@@ -242,7 +242,7 @@ export function loadLayer(key) {
       layerInfo.checked = false;
       showToast(
         `Failed to load ${layerInfo.name} layer from database.`,
-        "error"
+        "error",
       );
     });
 }

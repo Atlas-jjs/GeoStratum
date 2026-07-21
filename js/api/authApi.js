@@ -1,4 +1,4 @@
-const API_BASE = "server/auth.php";
+const API_BASE = "server/core/auth.php";
 
 async function handleResponse(res) {
   if (!res.ok) {
@@ -54,8 +54,9 @@ export function logout() {
  * Send an OTP code to a given username or email identity.
  */
 export function sendOtp(email) {
-  return fetch(`${API_BASE}?action=send_otp&email=${encodeURIComponent(email)}`)
-    .then(handleResponse);
+  return fetch(
+    `${API_BASE}?action=send_otp&email=${encodeURIComponent(email)}`,
+  ).then(handleResponse);
 }
 
 /**

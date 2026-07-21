@@ -1,6 +1,6 @@
 /*
  * Thin fetch() wrapper around the custom-layers REST API.
- * The API itself is a plain PHP script - see /server/custom-layers.php.
+ * The API itself is a plain PHP script - see /server/layers/custom-layers.php.
  *
  * NOTE: this path is relative to the current page (no leading slash), so
  * it resolves correctly whether your project is served from the domain
@@ -9,7 +9,7 @@
  * "server" folder - rename this if you ever rename that folder.
  */
 
-const API_BASE = "server/custom-layers.php";
+const API_BASE = "server/layers/custom-layers.php";
 
 async function handleResponse(res) {
   if (!res.ok) {
