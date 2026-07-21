@@ -1,13 +1,13 @@
 "use strict";
 
-import { login, register, sendOtp, resetPassword } from "../api/authApi.js";
+import { login, register, sendOtp, resetPassword } from "../../shared/api/authApi.js";
 import {
   getAuthState,
   onAuthStateChange,
   logoutUser,
   updateAuthState,
-} from "../utils/auth.js";
-import { showToast } from "../utils/toast.js";
+} from "../../shared/auth/auth.js";
+import { showToast } from "../../shared/utils/toast.js";
 
 var CAR_BOUNDS = [
   [15.95, 120.35],

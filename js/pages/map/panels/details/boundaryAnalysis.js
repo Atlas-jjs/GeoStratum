@@ -1,6 +1,6 @@
-import { AppState } from "../../../config.js";
+import { AppState } from "../../../../base/config.js";
 import { VALUE_OVERRIDES } from "./attributeConfig.js";
-import { getFeatureName } from "../../../utils/featureNaming.js";
+import { getFeatureName } from "../../../../shared/utils/featureNaming.js";
 
 let activeCalculationId = 0;
 
@@ -8,13 +8,30 @@ let activeCalculationId = 0;
  * Determine the category/group value of a feature for sorting and grouping.
  */
 function getFeatureGroupKey(feature, colorField, layerName) {
-  if (colorField && feature.properties && feature.properties[colorField] !== undefined && feature.properties[colorField] !== null) {
+  if (
+    colorField &&
+    feature.properties &&
+    feature.properties[colorField] !== undefined &&
+    feature.properties[colorField] !== null
+  ) {
     return String(feature.properties[colorField]);
   }
   // Fallback to common descriptive attributes
-  const fields = ["LCM_CLASS", "DESCRIPT", "PPF_Type", "sw_code", "pa_name", "WATERSHED", "Erosion"];
+  const fields = [
+    "LCM_CLASS",
+    "DESCRIPT",
+    "PPF_Type",
+    "sw_code",
+    "pa_name",
+    "WATERSHED",
+    "Erosion",
+  ];
   for (const f of fields) {
-    if (feature.properties && feature.properties[f] !== undefined && feature.properties[f] !== null) {
+    if (
+      feature.properties &&
+      feature.properties[f] !== undefined &&
+      feature.properties[f] !== null
+    ) {
       return String(feature.properties[f]);
     }
   }
@@ -27,11 +44,20 @@ function getFeatureGroupKey(feature, colorField, layerName) {
  * Get color for the specific category from layer configuration styles or codeColors.
  */
 function getFeatureColor(feature, groupKey, layerInfo) {
-  if (layerInfo.codeColors && groupKey !== undefined && layerInfo.codeColors[groupKey]) {
+  if (
+    layerInfo.codeColors &&
+    groupKey !== undefined &&
+    layerInfo.codeColors[groupKey]
+  ) {
     return layerInfo.codeColors[groupKey];
   }
   // Try mapping code if colorField exists but was formatted/stringified
-  if (layerInfo.codeColors && layerInfo.colorField && feature.properties && feature.properties[layerInfo.colorField] !== undefined) {
+  if (
+    layerInfo.codeColors &&
+    layerInfo.colorField &&
+    feature.properties &&
+    feature.properties[layerInfo.colorField] !== undefined
+  ) {
     const rawVal = feature.properties[layerInfo.colorField];
     if (layerInfo.codeColors[rawVal]) return layerInfo.codeColors[rawVal];
   }
@@ -62,9 +88,9 @@ function renderLayerResults(card, layerInfo, groups, totalAreaSqM) {
       key,
       areaSqM: data.areaSqM,
       color: data.color,
-      percentage: Math.min(100, (data.areaSqM / totalAreaSqM) * 100)
+      percentage: Math.min(100, (data.areaSqM / totalAreaSqM) * 100),
     }))
-    .filter(g => g.areaSqM > 0.01)
+    .filter((g) => g.areaSqM > 0.01)
     .sort((a, b) => b.areaSqM - a.areaSqM);
 
   if (sortedGroups.length === 0) {
@@ -130,7 +156,7 @@ export function updateBoundaryAnalysis() {
   }
 
   // Find all other checked, loaded layers (excluding the active selection's own layer)
-  const layersToAnalyze = Object.keys(AppState.layers).filter(key => {
+  const layersToAnalyze = Object.keys(AppState.layers).filter((key) => {
     const layer = AppState.layers[key];
     return (
       layer.checked &&
@@ -244,7 +270,12 @@ export function updateBoundaryAnalysis() {
       const b1 = boundaryBbox;
       const b2 = f._bbox;
       // Bbox intersection test
-      const overlaps = !(b1[0] > b2[2] || b1[2] < b2[0] || b1[1] > b2[3] || b1[3] < b2[1]);
+      const overlaps = !(
+        b1[0] > b2[2] ||
+        b1[2] < b2[0] ||
+        b1[1] > b2[3] ||
+        b1[3] < b2[1]
+      );
       if (overlaps) {
         candidateFeatures.push(f);
       }
@@ -280,7 +311,7 @@ export function updateBoundaryAnalysis() {
               if (!groups[gKey]) {
                 groups[gKey] = {
                   areaSqM: 0,
-                  color: getFeatureColor(f, gKey, layerInfo)
+                  color: getFeatureColor(f, gKey, layerInfo),
                 };
               }
               groups[gKey].areaSqM += area;
@@ -288,7 +319,10 @@ export function updateBoundaryAnalysis() {
           }
         } catch (err) {
           // Gracefully continue on singular geometry errors (e.g. self-intersections)
-          console.warn("Turf intersection skipped for feature due to geometry exception:", err);
+          console.warn(
+            "Turf intersection skipped for feature due to geometry exception:",
+            err,
+          );
         }
       }
 

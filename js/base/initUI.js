@@ -1,7 +1,7 @@
-import { initPanelController } from "./ui/panelController.js";
-import { initLayoutController } from "./ui/layoutController.js";
-import { initScreenshot } from "./ui/details/screenshot.js";
-import { buildLayerPanelHTML } from "./ui/panelLayerList.js";
+import { initPanelController } from "../pages/map/panels/panelController.js";
+import { initLayoutController } from "../pages/map/panels/layoutController.js";
+import { initScreenshot } from "../pages/map/panels/details/screenshot.js";
+import { buildLayerPanelHTML } from "../pages/map/panels/panelLayerList.js";
 
 /*
  * Main UI entry point. Wires up all panel, control, and layout

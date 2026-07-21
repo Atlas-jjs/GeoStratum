@@ -1,10 +1,10 @@
-import { AppState } from "../../../config.js";
-import { listCustomLayers } from "../../../api/customLayersApi.js";
+import { AppState } from "../../../../base/config.js";
+import { listCustomLayers } from "../../../../shared/api/customLayersApi.js";
 import { buildListItem } from "./importLayerItem.js";
 import { showDuplicateNameNotice } from "./importDialogs.js";
-import { onAuthStateChange } from "../../../utils/auth.js";
-import { openModal } from "../../ui/authUi.js";
-import { showToast } from "../../../utils/toast.js";
+import { onAuthStateChange } from "../../../../shared/auth/auth.js";
+import { openModal } from "../../../../shared/auth/authUi.js";
+import { showToast } from "../../../../shared/utils/toast.js";
 
 /*
  * Flow: user uploads a .geojson/.json or zipped Shapefile (parsed via
@@ -164,7 +164,10 @@ async function handleFileSelected(e, panel, listEl) {
     });
   } catch (err) {
     console.error("Failed to import file", err);
-    showToast(`Could not read "${file.name}" as GeoJSON or a zipped Shapefile.`, "error");
+    showToast(
+      `Could not read "${file.name}" as GeoJSON or a zipped Shapefile.`,
+      "error",
+    );
   }
 }
 

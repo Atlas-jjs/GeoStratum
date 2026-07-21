@@ -1,6 +1,6 @@
-import { AppState } from "../../config.js";
-import { loadLayer, deselectCurrentBoundary } from "../../map/layerRenderer.js";
-import { updateBoundaryAnalysis } from "../ui/details/boundaryAnalysis.js";
+import { AppState } from "../../../base/config.js";
+import { loadLayer, deselectCurrentBoundary } from "../layerRenderer.js";
+import { updateBoundaryAnalysis } from "../panels/details/boundaryAnalysis.js";
 
 /*
  * Attaches change event listeners to individual layer checkboxes dynamically based on AppState,

@@ -1,10 +1,7 @@
-import { BASEMAPS, initBasemapSwitcher } from "./js/map/basemap.js";
-import { initializeUI } from "./js/components/initUI.js";
-import {
-  initLayerRenderer,
-  loadDefaultLayers,
-} from "./js/map/layerRenderer.js";
-import { initMapAuthUI } from "./js/components/ui/authUi.js";
+import { BASEMAPS, initBasemapSwitcher } from "./pages/map/basemap.js";
+import { initializeUI } from "./base/initUI.js";
+import { initLayerRenderer, loadDefaultLayers } from "./pages/map/layerRenderer.js";
+import { initMapAuthUI } from "./shared/auth/authUi.js";
 
 let map = null;
 
