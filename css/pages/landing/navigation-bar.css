@@ -102,13 +102,6 @@
     min-width: 0;
   }
 
-  #slu-logo {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-
   .collab-eyebrow {
     display: none;
     font-family: var(--font-body);
@@ -168,11 +161,6 @@
     gap: 8px;
   }
 
-  #slu-logo {
-    width: 50px;
-    height: 50px;
-  }
-
   .collab-eyebrow {
     display: block;
     font-size: 9.5px;
@@ -212,11 +200,6 @@
 
   .collab {
     gap: 8px;
-  }
-
-  #slu-logo {
-    width: 75px;
-    height: 75px;
   }
 
   .collab-eyebrow {

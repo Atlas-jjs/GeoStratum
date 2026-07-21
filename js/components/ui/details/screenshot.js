@@ -234,7 +234,7 @@ function loadLogo() {
     const img = new Image();
     img.onload = () => resolve((_logoImg = img));
     img.onerror = () => resolve((_logoImg = null));
-    img.src = "./res/denr_logo.png";
+    img.src = "./assets/denr_logo.png";
   });
 }
 
