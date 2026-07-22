@@ -48,7 +48,46 @@
 
     <!-- * Page Layout Grid -->
     <div class="layout-container">
-      <!-- * Sidebar Navigation -->
+      <!-- * Mobile Navigation Dropdown (Visible on Mobile <= 768px) -->
+      <div class="mobile-nav-container">
+        <div class="mobile-nav-header">
+          <i data-lucide="compass" class="mobile-nav-icon"></i>
+          <span class="mobile-nav-title">Jump to section</span>
+        </div>
+        <div class="mobile-nav-select-wrapper">
+          <select
+            id="mobile-nav-select"
+            class="mobile-nav-select"
+            aria-label="Jump to documentation section"
+          >
+            <optgroup label="Getting Started">
+              <option value="welcome" selected>
+                Introduction &amp; Overview
+              </option>
+              <option value="quickstart">Quick Start Guide</option>
+            </optgroup>
+            <optgroup label="Feature Details">
+              <option value="layers">Managing Map Layers</option>
+              <option value="queries">Overlapping Spatial Queries</option>
+              <option value="imports">Importing Custom Datasets</option>
+              <option value="auth">Account Management &amp; Sync</option>
+              <option value="exports">
+                Screenshots &amp; High-Fidelity Exports
+              </option>
+            </optgroup>
+            <optgroup label="Technical Specs">
+              <option value="limitations">
+                System Limitations &amp; Constraints
+              </option>
+              <option value="mobile">Mobile Layout Reference</option>
+              <option value="faq">Troubleshooting FAQ</option>
+            </optgroup>
+          </select>
+          <i data-lucide="chevron-down" class="mobile-nav-chevron"></i>
+        </div>
+      </div>
+
+      <!-- * Sidebar Navigation (Desktop) -->
       <aside class="sidebar">
         <nav class="sidebar-nav" id="sidebar-nav">
           <span class="sidebar-heading">Getting Started</span>
@@ -59,10 +98,6 @@
           <a href="#quickstart" class="nav-link">
             <i data-lucide="compass"></i>
             <span>Quick Start Guide</span>
-          </a>
-          <a href="#video-tutorial" class="nav-link">
-            <i data-lucide="play-circle"></i>
-            <span>Video Tutorial</span>
           </a>
 
           <span class="sidebar-heading">Feature Details</span>
@@ -258,34 +293,6 @@
               <p>
                 Double-clicking on any boundary zoom-fits the screen viewport
                 automatically to that specific feature bounds.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- * Video Tutorial Section -->
-        <section id="video-tutorial" class="doc-section">
-          <h2><i data-lucide="play-circle"></i> Video Tutorial Session</h2>
-          <p>
-            Watch this quick video walk-through to see how to navigate
-            GeoStratum, import layers, and analyze data in real time:
-          </p>
-          <div class="video-container">
-            <video controls poster="assets/manual/map_overview.png">
-              <source src="assets/manual/video_tutorial.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div class="callout callout-info">
-            <div class="callout-icon"><i data-lucide="info"></i></div>
-            <div class="callout-body">
-              <h4>Video Session Info</h4>
-              <p>
-                To view the video in full screen, click the full-screen button
-                in the video controls bar. If the video fails to load, verify
-                that your recorded session video file is named
-                <code>video_tutorial.mp4</code> and has been placed inside the
-                <code>assets/manual/</code> directory.
               </p>
             </div>
           </div>

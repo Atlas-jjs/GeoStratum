@@ -22,26 +22,36 @@ faqTriggers.forEach((trigger) => {
   });
 });
 
-// ScrollSpy Logic to highlight active sidebar section
+// ScrollSpy Logic to highlight active sidebar section & mobile select
 const sections = document.querySelectorAll(".doc-section");
 const navLinks = document.querySelectorAll(".nav-link");
+const mobileSelect = document.getElementById("mobile-nav-select");
 const SCROLL_OFFSET = 130;
 
-// Intercept nav-link clicks: with <base href="../"> in place, native
-// "#id" anchors resolve against the base URL and navigate away from
-// the page instead of scrolling to the section. Handle it manually.
+function scrollToSection(id) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  const top =
+    target.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+  window.scrollTo({ top, behavior: "smooth" });
+}
+
+// Intercept nav-link clicks
 navLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
     const id = link.getAttribute("href").slice(1);
-    const target = document.getElementById(id);
-    if (!target) return;
-
     event.preventDefault();
-    const top =
-      target.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
-    window.scrollTo({ top, behavior: "smooth" });
+    scrollToSection(id);
   });
 });
+
+// Handle mobile navigation select dropdown change
+if (mobileSelect) {
+  mobileSelect.addEventListener("change", (event) => {
+    const sectionId = event.target.value;
+    scrollToSection(sectionId);
+  });
+}
 
 function setActiveNavLink(sectionId) {
   navLinks.forEach((link) => {
@@ -50,14 +60,12 @@ function setActiveNavLink(sectionId) {
       link.getAttribute("href") === `#${sectionId}`,
     );
   });
+  if (mobileSelect && mobileSelect.value !== sectionId) {
+    mobileSelect.value = sectionId;
+  }
 }
 
 function updateScrollSpy() {
-  // Some sections (e.g. a trailing FAQ with nothing after it) sit at
-  // the very end of the page. Their offsetTop - SCROLL_OFFSET can be
-  // greater than the maximum possible scroll position, so the normal
-  // per-section check below would never match them. Catch that case
-  // explicitly by checking if the user has hit the bottom of the page.
   const atBottom =
     window.innerHeight + window.scrollY >=
     document.documentElement.scrollHeight - 2;
