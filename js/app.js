@@ -1,6 +1,9 @@
 import { BASEMAPS, initBasemapSwitcher } from "./pages/map/basemap.js";
 import { initializeUI } from "./base/initUI.js";
-import { initLayerRenderer, loadDefaultLayers } from "./pages/map/layerRenderer.js";
+import {
+  initLayerRenderer,
+  loadDefaultLayers,
+} from "./pages/map/layerRenderer.js";
 import { initMapAuthUI } from "./shared/auth/authUi.js";
 
 let map = null;
@@ -21,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     minZoom: 8,
     maxZoom: 18,
     zoomControl: true,
+    tap: false,
   }).setView([17.25, 120.9], 8);
 
   // * Default basemap

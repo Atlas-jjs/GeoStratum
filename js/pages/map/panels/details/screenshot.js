@@ -1,6 +1,25 @@
 // * === Screenshot Component ===
 
+import { showToast } from "../../../../../shared/utils/toast.js";
+
 let _capturedCanvas = null;
+
+async function downloadCanvas(canvas, format = "png") {
+  const blob = await canvasToBlob(canvas, format);
+  if (!blob) return;
+
+  const timestamp = new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace(/[:.]/g, "-");
+  const ext = format === "jpeg" ? "jpg" : format;
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = `DENR-CAR_Layers_-${timestamp}.${ext}`;
+  link.href = url;
+  link.click();
+  URL.revokeObjectURL(url);
+}
 
 export function initScreenshot(map) {
   const screenshotBtn = document.getElementById("btn-screenshot");
@@ -19,20 +38,7 @@ export function initScreenshot(map) {
   downloadBtn?.addEventListener("click", async () => {
     if (!_capturedCanvas) return;
     const format = formatSelect?.value || "png";
-    const blob = await canvasToBlob(_capturedCanvas, format);
-    if (!blob) return;
-
-    const timestamp = new Date()
-      .toISOString()
-      .slice(0, 19)
-      .replace(/[:.]/g, "-");
-    const ext = format === "jpeg" ? "jpg" : format;
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = `DENR-CAR_Layers_-${timestamp}.${ext}`;
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url);
+    await downloadCanvas(_capturedCanvas, format);
   });
 
   previewModal?.addEventListener("click", (e) => {
@@ -323,7 +329,16 @@ async function captureWithMap(map) {
     document.getElementById("panel-dock"),
     document.querySelector(".basemap-switcher"),
     document.querySelector(".controls-trigger-container"),
+    document.getElementById("map-nav-bar"),
+    document.querySelector(".leaflet-control-container"),
+    document.querySelector(".details-icons"),
   ].filter(Boolean);
+
+  const isMobile = window.innerWidth <= 768 || (typeof L !== "undefined" && L.Browser.mobile);
+
+  if (isMobile) {
+    showToast("Capturing map screenshot...", "info");
+  }
 
   // Loading state
   screenshotBtn.style.display = "none";
@@ -381,14 +396,24 @@ async function captureWithMap(map) {
     stampDateTime(ctx, canvas, DPR);
 
     _capturedCanvas = canvas;
-    document.getElementById("screenshot-preview-img").src =
-      canvas.toDataURL("image/png");
-    document
-      .getElementById("screenshot-preview-modal")
-      .classList.remove("hidden");
+
+    if (isMobile) {
+      await downloadCanvas(canvas, "png");
+      showToast("Screenshot captured and downloaded successfully!", "success");
+    } else {
+      document.getElementById("screenshot-preview-img").src =
+        canvas.toDataURL("image/png");
+      document
+        .getElementById("screenshot-preview-modal")
+        .classList.remove("hidden");
+    }
   } catch (err) {
     console.error("[Screenshot] Capture failed:", err);
     restore();
+    if (isMobile) {
+      showToast("Failed to capture map screenshot.", "error");
+    }
+  }
   } finally {
     screenshotBtn.style.display = "block";
     screenshotBtn.innerHTML = '<i data-lucide="camera"></i>';
