@@ -1,6 +1,6 @@
 // * === Screenshot Component ===
 
-import { showToast } from "../../../../../shared/utils/toast.js";
+import { showToast } from "../../../../shared/utils/toast.js";
 
 let _capturedCanvas = null;
 
@@ -8,10 +8,7 @@ async function downloadCanvas(canvas, format = "png") {
   const blob = await canvasToBlob(canvas, format);
   if (!blob) return;
 
-  const timestamp = new Date()
-    .toISOString()
-    .slice(0, 19)
-    .replace(/[:.]/g, "-");
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, "-");
   const ext = format === "jpeg" ? "jpg" : format;
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -334,7 +331,8 @@ async function captureWithMap(map) {
     document.querySelector(".details-icons"),
   ].filter(Boolean);
 
-  const isMobile = window.innerWidth <= 768 || (typeof L !== "undefined" && L.Browser.mobile);
+  const isMobile =
+    window.innerWidth <= 768 || (typeof L !== "undefined" && L.Browser.mobile);
 
   if (isMobile) {
     showToast("Capturing map screenshot...", "info");
@@ -413,7 +411,6 @@ async function captureWithMap(map) {
     if (isMobile) {
       showToast("Failed to capture map screenshot.", "error");
     }
-  }
   } finally {
     screenshotBtn.style.display = "block";
     screenshotBtn.innerHTML = '<i data-lucide="camera"></i>';
