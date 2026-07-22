@@ -25,6 +25,7 @@ faqTriggers.forEach((trigger) => {
 // ScrollSpy Logic to highlight active sidebar section
 const sections = document.querySelectorAll(".doc-section");
 const navLinks = document.querySelectorAll(".nav-link");
+const SCROLL_OFFSET = 130;
 
 // Intercept nav-link clicks: with <base href="../"> in place, native
 // "#id" anchors resolve against the base URL and navigate away from
@@ -36,26 +37,46 @@ navLinks.forEach((link) => {
     if (!target) return;
 
     event.preventDefault();
-    const top = target.getBoundingClientRect().top + window.scrollY - 130;
+    const top =
+      target.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
     window.scrollTo({ top, behavior: "smooth" });
   });
 });
 
-window.addEventListener("scroll", () => {
+function setActiveNavLink(sectionId) {
+  navLinks.forEach((link) => {
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === `#${sectionId}`,
+    );
+  });
+}
+
+function updateScrollSpy() {
+  // Some sections (e.g. a trailing FAQ with nothing after it) sit at
+  // the very end of the page. Their offsetTop - SCROLL_OFFSET can be
+  // greater than the maximum possible scroll position, so the normal
+  // per-section check below would never match them. Catch that case
+  // explicitly by checking if the user has hit the bottom of the page.
+  const atBottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 2;
+
+  if (atBottom) {
+    setActiveNavLink(sections[sections.length - 1].getAttribute("id"));
+    return;
+  }
+
   let currentSectionId = "";
   sections.forEach((section) => {
     const sectionTop = section.offsetTop;
-    if (window.scrollY >= sectionTop - 130) {
+    if (window.scrollY >= sectionTop - SCROLL_OFFSET) {
       currentSectionId = section.getAttribute("id");
     }
   });
 
-  if (currentSectionId) {
-    navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === `#${currentSectionId}`) {
-        link.classList.add("active");
-      }
-    });
-  }
-});
+  if (currentSectionId) setActiveNavLink(currentSectionId);
+}
+
+window.addEventListener("scroll", updateScrollSpy);
+updateScrollSpy();

@@ -1,5 +1,5 @@
-import { getFeatureName } from "../../utils/featureNaming.js";
-import { AppState } from "../../config.js";
+import { getFeatureName } from "../../../shared/utils/featureNaming.js";
+import { AppState } from "../../../base/config.js";
 import { updateBoundaryAnalysis } from "./details/boundaryAnalysis.js";
 import {
   normalizeAttributeKey,

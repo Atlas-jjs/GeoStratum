@@ -1,9 +1,9 @@
-import { makeDragGrip } from "../../../utils/dragGrip.js";
+import { makeDragGrip } from "../../../../shared/utils/dragGrip.js";
 import {
   createCustomLayer,
   updateCustomLayer,
   deleteCustomLayer,
-} from "../../../api/customLayersApi.js";
+} from "../../../../shared/api/customLayersApi.js";
 import { confirmDelete } from "./importDialogs.js";
 
 const OPACITY_CONTROL = {

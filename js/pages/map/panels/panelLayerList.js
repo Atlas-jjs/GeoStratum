@@ -1,4 +1,4 @@
-import { AppState } from "../../config.js";
+import { AppState } from "../../../base/config.js";
 
 // ─── Layer panel structure definition ───────────────────────────────────────
 // Defines the UI groupings and display labels independently from the data config.
@@ -154,7 +154,7 @@ export function buildLayerPanelHTML(prefix, containerId) {
 
   // ── Boundary rows (no style controls) ──
   const boundaryRows = BOUNDARY_LAYERS.map((def) =>
-    buildBoundaryRow(prefix, def)
+    buildBoundaryRow(prefix, def),
   ).join("");
 
   // ── Sectioned layer rows ──

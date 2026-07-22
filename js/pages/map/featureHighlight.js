@@ -1,4 +1,4 @@
-import { AppState } from "../config.js";
+import { AppState } from "../../base/config.js";
 
 let highlightedFeature = null;
 

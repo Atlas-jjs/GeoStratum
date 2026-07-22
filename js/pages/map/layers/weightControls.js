@@ -1,5 +1,5 @@
-import { AppState } from "../../config.js";
-import { makeDragGrip } from "../../utils/dragGrip.js";
+import { AppState } from "../../../base/config.js";
+import { makeDragGrip } from "../../../shared/utils/dragGrip.js";
 
 export function initWeightControls() {
   document

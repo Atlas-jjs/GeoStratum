@@ -1,13 +1,13 @@
-import { AppState } from "../config.js";
-import { shouldProject, projectFeaturesChunked } from "../utils/projection.js";
-import { getFeatureName } from "../utils/featureNaming.js";
+import { AppState } from "../../base/config.js";
+import { shouldProject, projectFeaturesChunked } from "../../shared/utils/projection.js";
+import { getFeatureName } from "../../shared/utils/featureNaming.js";
 import {
   highlightFeature,
   resetHighlightedFeatures,
 } from "./featureHighlight.js";
-import { showFeatureDetails } from "../components/ui/detailsPanel.js";
-import { updateBoundaryAnalysis } from "../components/ui/details/boundaryAnalysis.js";
-import { showToast } from "../utils/toast.js";
+import { showFeatureDetails } from "./panels/detailsPanel.js";
+import { updateBoundaryAnalysis } from "./panels/details/boundaryAnalysis.js";
+import { showToast } from "../../shared/utils/toast.js";
 
 const layerPriority = {
   cad_municipality: 100,
