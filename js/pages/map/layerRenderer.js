@@ -1,5 +1,8 @@
 import { AppState } from "../../base/config.js";
-import { shouldProject, projectFeaturesChunked } from "../../shared/utils/projection.js";
+import {
+  shouldProject,
+  projectFeaturesChunked,
+} from "../../shared/utils/projection.js";
 import { getFeatureName } from "../../shared/utils/featureNaming.js";
 import {
   highlightFeature,
@@ -33,31 +36,26 @@ function getFeaturesWithinPolygon(geojson, boundaryFeature) {
   if (!geojson || !geojson.features) return geojson;
   if (!boundaryFeature) return geojson;
 
-  let boundaryBbox = boundaryFeature._bbox;
-  if (!boundaryBbox) {
-    try {
-      boundaryFeature._bbox = boundaryBbox = turf.bbox(boundaryFeature);
-    } catch (e) {
-      return geojson;
-    }
+  let boundaryBbox;
+  try {
+    boundaryBbox = turf.bbox(boundaryFeature);
+  } catch (e) {
+    return geojson;
   }
 
   const filteredFeatures = [];
-  const isMobile = window.innerWidth <= 768 || (typeof L !== "undefined" && L.Browser.mobile);
 
   for (let i = 0; i < geojson.features.length; i++) {
     const feature = geojson.features[i];
     if (!feature.geometry) continue;
 
     // 1. Fast Bounding Box overlap check
-    let featureBbox = feature._bbox;
-    if (!featureBbox) {
-      try {
-        feature._bbox = featureBbox = turf.bbox(feature);
-      } catch (e) {
-        filteredFeatures.push(feature);
-        continue;
-      }
+    let featureBbox;
+    try {
+      featureBbox = turf.bbox(feature);
+    } catch (e) {
+      filteredFeatures.push(feature);
+      continue;
     }
 
     if (!doBboxesOverlap(boundaryBbox, featureBbox)) {
@@ -75,8 +73,14 @@ function getFeaturesWithinPolygon(geojson, boundaryFeature) {
         filteredFeatures.push(feature);
       }
     } else if (geomType === "Polygon" || geomType === "MultiPolygon") {
-      if (isMobile) {
-        // Fast mobile fallback: skip heavy turf.intersect clipping, do fast centroid check
+      try {
+        const intersection = turf.intersect(feature, boundaryFeature);
+        if (intersection) {
+          intersection.properties = feature.properties;
+          filteredFeatures.push(intersection);
+        }
+      } catch (err) {
+        // Fallback: check if centroid is inside
         try {
           const centroid = turf.centroid(feature);
           if (turf.booleanPointInPolygon(centroid, boundaryFeature)) {
@@ -84,24 +88,6 @@ function getFeaturesWithinPolygon(geojson, boundaryFeature) {
           }
         } catch (e) {
           filteredFeatures.push(feature);
-        }
-      } else {
-        try {
-          const intersection = turf.intersect(feature, boundaryFeature);
-          if (intersection) {
-            intersection.properties = feature.properties;
-            filteredFeatures.push(intersection);
-          }
-        } catch (err) {
-          // Fallback: check if centroid is inside
-          try {
-            const centroid = turf.centroid(feature);
-            if (turf.booleanPointInPolygon(centroid, boundaryFeature)) {
-              filteredFeatures.push(feature);
-            }
-          } catch (e) {
-            filteredFeatures.push(feature);
-          }
         }
       }
     } else if (geomType === "LineString" || geomType === "MultiLineString") {
@@ -481,9 +467,6 @@ function renderGeoJSONLayer(key) {
 
       layer.on({
         mouseover: (e) => {
-          const isMobile = window.innerWidth <= 768 || (typeof L !== "undefined" && L.Browser.mobile);
-          if (isMobile) return;
-
           const outline = e.target;
 
           // Does not override the selectedLayer when hovering other polygons
@@ -511,9 +494,6 @@ function renderGeoJSONLayer(key) {
           }
         },
         mouseout: (e) => {
-          const isMobile = window.innerWidth <= 768 || (typeof L !== "undefined" && L.Browser.mobile);
-          if (isMobile) return;
-
           const outline = e.target;
           if (outline === layerInfo.selectedLayer) return;
           layerInfo.leafletLayer.resetStyle(outline);
@@ -539,10 +519,8 @@ function renderGeoJSONLayer(key) {
           highlightFeature(e.target);
           showFeatureDetails(feature.properties, layerInfo.name);
 
-          // Re-render all checked layers to clip them to the selected boundary (deferred by 50ms for smooth UI feedback)
-          setTimeout(() => {
-            reRenderAllCheckedLayers();
-          }, 50);
+          // Re-render all checked layers to clip them to the selected boundary
+          reRenderAllCheckedLayers();
 
           // Bring the newly selected polygon to the top of the polygonsPane
           if (geomType === "Polygon" || geomType === "MultiPolygon") {

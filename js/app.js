@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     minZoom: 8,
     maxZoom: 18,
     zoomControl: true,
-    tap: false,
   }).setView([17.25, 120.9], 8);
 
   // * Default basemap
