@@ -81,19 +81,23 @@ function fixTilesForCapture(map) {
     el: t,
     left: t.style.left,
     top: t.style.top,
+    transform: t.style.transform,
   }));
 
   mapPane.style.transform = "translate3d(0px,0px,0px)";
   tiles.forEach((t) => {
-    t.style.left = `${(parseFloat(t.style.left) || 0) + dx}px`;
-    t.style.top = `${(parseFloat(t.style.top) || 0) + dy}px`;
+    const pos = getLeafletPos(t);
+    t.style.transform = "none";
+    t.style.left = `${pos.x + dx}px`;
+    t.style.top = `${pos.y + dy}px`;
   });
 
   return () => {
     mapPane.style.transform = savedTransform;
-    saved.forEach(({ el, left, top }) => {
+    saved.forEach(({ el, left, top, transform }) => {
       el.style.left = left;
       el.style.top = top;
+      el.style.transform = transform;
     });
   };
 }
@@ -127,7 +131,7 @@ async function drawSvgOverlayOntoCanvas(map, renderer, destCanvas, DPR) {
   } = renderer._bounds;
   const { x: w, y: h } = renderer._svgSize;
   const panOffset = getLeafletPos(map.getPanes().mapPane);
-  const { left, top } = map.getContainer().getBoundingClientRect();
+  const mapRect = map.getContainer().getBoundingClientRect();
 
   const clone = renderer._container.cloneNode(true);
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -148,8 +152,8 @@ async function drawSvgOverlayOntoCanvas(map, renderer, destCanvas, DPR) {
         .getContext("2d")
         .drawImage(
           img,
-          (left + panOffset.x + minX) * DPR,
-          (top + panOffset.y + minY) * DPR,
+          (mapRect.left + panOffset.x + minX) * DPR,
+          (mapRect.top + panOffset.y + minY) * DPR,
           w * DPR,
           h * DPR,
         );
@@ -300,7 +304,7 @@ async function drawDetailsPanelOntoCanvas(destCanvas, DPR) {
   const panel = document.getElementById("details-panel");
   if (!panel || panel.classList.contains("hidden")) return;
 
-  panel.style.position = "absolute";
+  const panelRect = panel.getBoundingClientRect();
   const panelCanvas = await html2canvas(panel, {
     useCORS: true,
     allowTaint: true,
@@ -308,28 +312,38 @@ async function drawDetailsPanelOntoCanvas(destCanvas, DPR) {
     logging: false,
     backgroundColor: null,
   });
-  panel.style.position = "";
 
-  const { left, top } = panel.getBoundingClientRect();
-  destCanvas.getContext("2d").drawImage(panelCanvas, left * DPR, top * DPR);
+  destCanvas
+    .getContext("2d")
+    .drawImage(
+      panelCanvas,
+      panelRect.left * DPR,
+      panelRect.top * DPR,
+      panelRect.width * DPR,
+      panelRect.height * DPR,
+    );
 }
 
 // * Capture
 
 async function captureWithMap(map) {
   const screenshotBtn = document.getElementById("btn-screenshot");
+  const detailsPanel = document.getElementById("details-panel");
 
   const toHide = [
     document.getElementById("panel-dock"),
     document.querySelector(".basemap-switcher"),
     document.querySelector(".controls-trigger-container"),
+    detailsPanel, // Hide details panel in Step 1 so it's not rendered twice or under SVG
   ].filter(Boolean);
 
   // Loading state
-  screenshotBtn.style.display = "none";
-  screenshotBtn.classList.add("screenshot-btn--loading");
-  screenshotBtn.disabled = true;
-  lucide.createIcons();
+  if (screenshotBtn) {
+    screenshotBtn.style.display = "none";
+    screenshotBtn.classList.add("screenshot-btn--loading");
+    screenshotBtn.disabled = true;
+  }
+  if (window.lucide) lucide.createIcons();
 
   toHide.forEach((el) => (el.style.visibility = "hidden"));
 
@@ -349,18 +363,22 @@ async function captureWithMap(map) {
 
   try {
     const DPR = window.devicePixelRatio || 1;
+    const scrollX = window.scrollX || window.pageXOffset || 0;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
 
-    // Step 1 — tiles + UI (SVG hidden)
+    // Step 1 — tiles + UI (SVG & details panel hidden)
     const canvas = await html2canvas(document.body, {
       useCORS: true,
       allowTaint: true,
       scale: DPR,
       logging: false,
-      scrollX: 0,
-      scrollY: 0,
+      scrollX: scrollX,
+      scrollY: scrollY,
+      x: scrollX,
+      y: scrollY,
       width: window.innerWidth,
-      windowWidth: window.innerWidth,
       height: window.innerHeight,
+      windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
     });
 
@@ -390,10 +408,13 @@ async function captureWithMap(map) {
     console.error("[Screenshot] Capture failed:", err);
     restore();
   } finally {
-    screenshotBtn.style.display = "block";
-    screenshotBtn.innerHTML = '<i data-lucide="camera"></i>';
-    screenshotBtn.classList.remove("screenshot-btn--loading");
-    screenshotBtn.disabled = false;
-    lucide.createIcons();
+    if (screenshotBtn) {
+      screenshotBtn.style.display = "";
+      screenshotBtn.innerHTML = '<i data-lucide="camera"></i>';
+      screenshotBtn.classList.remove("screenshot-btn--loading");
+      screenshotBtn.disabled = false;
+    }
+    if (window.lucide) lucide.createIcons();
   }
 }
+
