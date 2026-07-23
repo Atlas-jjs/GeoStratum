@@ -62,8 +62,12 @@ function canvasToBlob(canvas, format) {
   return new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
 }
 
-// * Tile-pane fix  (Problem A)
+// * ─── Transform Neutralization ────────────────────────────────────────────
 
+/**
+ * Reads a Leaflet internal position from either _leaflet_pos or the element's
+ * CSS transform. Always returns pixel {x, y} regardless of the source.
+ */
 function getLeafletPos(el) {
   if (el?._leaflet_pos) return { x: el._leaflet_pos.x, y: el._leaflet_pos.y };
   const m = (el?.style?.transform ?? "").match(
@@ -72,48 +76,72 @@ function getLeafletPos(el) {
   return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
 }
 
-function fixTilesForCapture(map) {
-  const { mapPane, tilePane } = map.getPanes();
-  const { x: dx, y: dy } = getLeafletPos(mapPane);
-  const savedTransform = mapPane.style.transform;
+/**
+ * Freezes every animated Leaflet pane into a plain pixel position so that
+ * html2canvas (which does NOT parse translate3d) sees the correct layout.
+ *
+ * Returns a restore() callback that puts everything back.
+ */
+function neutralizeLeafletTransforms(map) {
+  const panes = map.getPanes();
+  const mapPane = panes.mapPane;
+
+  // Collect ALL panes that carry a transform
+  const savedPanes = [];
+  Object.values(panes).forEach((pane) => {
+    if (!pane || !pane.style) return;
+    const transform = pane.style.transform;
+    if (!transform && !pane._leaflet_pos) return;
+    const { x, y } = getLeafletPos(pane);
+    savedPanes.push({ el: pane, transform, left: pane.style.left, top: pane.style.top });
+    pane.style.transform = "none";
+    pane.style.left = `${x}px`;
+    pane.style.top = `${y}px`;
+  });
+
+  // Collect tiles (they also carry transforms in newer Leaflet builds)
+  const tilePane = panes.tilePane;
   const tiles = Array.from(tilePane?.querySelectorAll(".leaflet-tile") ?? []);
-  const saved = tiles.map((t) => ({
+  const savedTiles = tiles.map((t) => ({
     el: t,
+    transform: t.style.transform,
     left: t.style.left,
     top: t.style.top,
-    transform: t.style.transform,
   }));
-
-  mapPane.style.transform = "translate3d(0px,0px,0px)";
   tiles.forEach((t) => {
     const pos = getLeafletPos(t);
     t.style.transform = "none";
-    t.style.left = `${pos.x + dx}px`;
-    t.style.top = `${pos.y + dy}px`;
+    // If a tile had no explicit left/top but was positioned via transform, bake that in
+    t.style.left = pos.x !== 0 ? `${pos.x}px` : t.style.left;
+    t.style.top = pos.y !== 0 ? `${pos.y}px` : t.style.top;
   });
 
   return () => {
-    mapPane.style.transform = savedTransform;
-    saved.forEach(({ el, left, top, transform }) => {
+    savedPanes.forEach(({ el, transform, left, top }) => {
+      el.style.transform = transform;
       el.style.left = left;
       el.style.top = top;
+    });
+    savedTiles.forEach(({ el, transform, left, top }) => {
       el.style.transform = transform;
+      el.style.left = left;
+      el.style.top = top;
     });
   };
 }
 
-// * SVG overlay → canvas  (Problem B)
+// * ─── SVG Vector Overlay Compositing ─────────────────────────────────────
 
-// Each custom pane (polygons/lines/points) gets its own SVG renderer in map._paneRenderers,
-// separate from the legacy shared map._renderer, so all of them must be hidden/composited — not just one.
+/**
+ * Gathers all active Leaflet SVG renderers (one per custom pane) sorted by
+ * z-index so they are composited in the correct draw order.
+ */
 function getActiveSvgRenderers(map) {
   const renderers = new Set();
-
   if (map._renderer) renderers.add(map._renderer);
   if (map._paneRenderers) {
     Object.values(map._paneRenderers).forEach((r) => r && renderers.add(r));
   }
-
   return Array.from(renderers)
     .filter((r) => r?._container?.tagName?.toLowerCase() === "svg")
     .sort((a, b) => {
@@ -123,52 +151,87 @@ function getActiveSvgRenderers(map) {
     });
 }
 
-async function drawSvgOverlayOntoCanvas(map, renderer, destCanvas, DPR) {
+/**
+ * Renders one SVG renderer's shapes onto destCanvas at the correct pixel
+ * position.  The SVG's own coordinate system already accounts for the
+ * renderer _bounds origin, so we just need to know where the mapPane sat
+ * when the capture was taken (panOffset) and where the map container is
+ * on screen (mapRect).
+ */
+async function drawSvgOverlayOntoCanvas(map, renderer, destCanvas, DPR, mapRect, mapPanOffset) {
   if (!renderer?._container || !renderer._bounds || !renderer._svgSize) return;
 
-  const {
-    min: { x: minX, y: minY },
-  } = renderer._bounds;
+  const { min: { x: minX, y: minY } } = renderer._bounds;
   const { x: w, y: h } = renderer._svgSize;
-  const panOffset = getLeafletPos(map.getPanes().mapPane);
-  const mapRect = map.getContainer().getBoundingClientRect();
+
+  // mapPanOffset is the pre-neutralization mapPane translation captured before
+  // transforms were zeroed out. We use it (plus the renderer pane's own offset
+  // relative to mapPane) to position the SVG correctly in the output canvas.
+  const panePosBeforeNeutralize = mapPanOffset;
 
   const clone = renderer._container.cloneNode(true);
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   clone.setAttribute("width", w);
   clone.setAttribute("height", h);
   clone.style.transform = "";
+  clone.style.left = "";
+  clone.style.top = "";
 
-  const url = URL.createObjectURL(
-    new Blob([new XMLSerializer().serializeToString(clone)], {
-      type: "image/svg+xml;charset=utf-8",
-    }),
-  );
+  const blob = new Blob([new XMLSerializer().serializeToString(clone)], {
+    type: "image/svg+xml;charset=utf-8",
+  });
+  const url = URL.createObjectURL(blob);
 
   await new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
-      destCanvas
-        .getContext("2d")
-        .drawImage(
-          img,
-          (mapRect.left + panOffset.x + minX) * DPR,
-          (mapRect.top + panOffset.y + minY) * DPR,
-          w * DPR,
-          h * DPR,
-        );
+      const ctx = destCanvas.getContext("2d");
+      const dx = (mapRect.left + panePosBeforeNeutralize.x + minX) * DPR;
+      const dy = (mapRect.top + panePosBeforeNeutralize.y + minY) * DPR;
+      ctx.drawImage(img, dx, dy, w * DPR, h * DPR);
       URL.revokeObjectURL(url);
       resolve();
     };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      resolve();
-    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(); };
     img.src = url;
   });
 }
 
-// * Stamp helpers
+// * ─── Details Panel ───────────────────────────────────────────────────────
+
+async function drawDetailsPanelOntoCanvas(destCanvas, DPR) {
+  const panel = document.getElementById("details-panel");
+  if (!panel || panel.classList.contains("hidden")) return;
+
+  // Capture the bounding rect BEFORE showing (it was hidden during Step 1)
+  // We restore it before calling this function, so getBoundingClientRect is valid.
+  const panelRect = panel.getBoundingClientRect();
+
+  const panelCanvas = await html2canvas(panel, {
+    useCORS: true,
+    allowTaint: true,
+    scale: DPR,
+    logging: false,
+    backgroundColor: null,
+    // Capture only the panel element itself — no scroll offset needed
+    x: 0,
+    y: 0,
+    width: panelRect.width,
+    height: panelRect.height,
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight,
+  });
+
+  destCanvas.getContext("2d").drawImage(
+    panelCanvas,
+    panelRect.left * DPR,
+    panelRect.top * DPR,
+    panelRect.width * DPR,
+    panelRect.height * DPR,
+  );
+}
+
+// * ─── Stamp Helpers ───────────────────────────────────────────────────────
 
 function roundedRectPath(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -192,7 +255,6 @@ function stampBadge(ctx, canvas, DPR, text, alignRight = false) {
   const rad = Math.round(6 * DPR);
 
   ctx.font = `italic ${fontPx}px Inter, sans-serif`;
-
   const barW = ctx.measureText(text).width + padX * 2;
   const barX = alignRight
     ? canvas.width - barW - Math.round(padX / 2)
@@ -209,25 +271,15 @@ function stampBadge(ctx, canvas, DPR, text, alignRight = false) {
 
 function stampDisclaimer(ctx, canvas, DPR) {
   stampBadge(
-    ctx,
-    canvas,
-    DPR,
+    ctx, canvas, DPR,
     "Disclaimer: This map is not intended to replace any official data but is for planning purposes only. Not for legal or navigational use.",
   );
 }
 
 function stampDateTime(ctx, canvas, DPR) {
   const now = new Date();
-  const dateStr = now.toLocaleDateString("en-PH", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  const timeStr = now.toLocaleTimeString("en-PH", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
+  const dateStr = now.toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" });
+  const timeStr = now.toLocaleTimeString("en-PH", { hour: "numeric", minute: "2-digit", hour12: true });
   stampBadge(ctx, canvas, DPR, `Captured: ${dateStr} · ${timeStr}`, true);
 }
 
@@ -242,7 +294,6 @@ function loadLogo() {
   });
 }
 
-// Top-right letterhead badge: logo, full agency name, and CAR subheading — sized and weighted to stand out.
 async function stampLogo(ctx, canvas, DPR) {
   const logo = await loadLogo();
   const title = "DEPARTMENT OF ENVIRONMENT AND NATURAL RESOURCES";
@@ -276,13 +327,7 @@ async function stampLogo(ctx, canvas, DPR) {
 
   let cursorX = barX + padX;
   if (logo) {
-    ctx.drawImage(
-      logo,
-      cursorX,
-      barY + (barH - logoSize) / 2,
-      logoSize,
-      logoSize,
-    );
+    ctx.drawImage(logo, cursorX, barY + (barH - logoSize) / 2, logoSize, logoSize);
     cursorX += logoSize + gap;
   }
 
@@ -298,46 +343,21 @@ async function stampLogo(ctx, canvas, DPR) {
   ctx.textBaseline = "alphabetic";
 }
 
-// * Panel capture helper  (Problem C — fixed panel layering)
-
-async function drawDetailsPanelOntoCanvas(destCanvas, DPR) {
-  const panel = document.getElementById("details-panel");
-  if (!panel || panel.classList.contains("hidden")) return;
-
-  const panelRect = panel.getBoundingClientRect();
-  const panelCanvas = await html2canvas(panel, {
-    useCORS: true,
-    allowTaint: true,
-    scale: DPR,
-    logging: false,
-    backgroundColor: null,
-  });
-
-  destCanvas
-    .getContext("2d")
-    .drawImage(
-      panelCanvas,
-      panelRect.left * DPR,
-      panelRect.top * DPR,
-      panelRect.width * DPR,
-      panelRect.height * DPR,
-    );
-}
-
-// * Capture
+// * ─── Main Capture ────────────────────────────────────────────────────────
 
 async function captureWithMap(map) {
   const screenshotBtn = document.getElementById("btn-screenshot");
   const detailsPanel = document.getElementById("details-panel");
 
+  // UI elements to hide during map-body capture (they'll be redrawn separately or excluded)
   const toHide = [
     document.getElementById("panel-dock"),
     document.querySelector(".basemap-switcher"),
     document.querySelector(".controls-trigger-container"),
-    detailsPanel, // Hide details panel in Step 1 so it's not rendered twice or under SVG
+    detailsPanel,
   ].filter(Boolean);
 
-  // Loading state
+  // ── Loading state ──
   if (screenshotBtn) {
     screenshotBtn.style.display = "none";
     screenshotBtn.classList.add("screenshot-btn--loading");
@@ -345,65 +365,76 @@ async function captureWithMap(map) {
   }
   if (window.lucide) lucide.createIcons();
 
+  // ── Snapshot geometry BEFORE any DOM mutation ──────────────────────────
+  // getBoundingClientRect() must be read before we hide/transform anything
+  // or it returns a stale/wrong value.
+  const mapContainer = map.getContainer();
+  const mapRect = mapContainer.getBoundingClientRect();
+  const mapPanOffset = getLeafletPos(map.getPanes().mapPane);
+
+  // Hide UI chrome
   toHide.forEach((el) => (el.style.visibility = "hidden"));
 
-  // Hide EVERY active SVG renderer (one per custom pane), not just the
-  // legacy single map._renderer — see getActiveSvgRenderers for why.
+  // Hide SVG renderers — they'll be composited manually in Step 2
   const renderers = getActiveSvgRenderers(map);
   renderers.forEach((r) => (r._container.style.visibility = "hidden"));
 
-  const restoreTiles = fixTilesForCapture(map);
-  await new Promise((r) => requestAnimationFrame(r));
+  // ── Neutralize ALL Leaflet transforms so html2canvas sees pixel layout ──
+  const restoreTransforms = neutralizeLeafletTransforms(map);
+
+  // Double rAF: first frame applies style mutations, second allows paint.
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
   const restore = () => {
-    restoreTiles();
+    restoreTransforms();
     renderers.forEach((r) => (r._container.style.visibility = ""));
     toHide.forEach((el) => (el.style.visibility = ""));
   };
 
   try {
     const DPR = window.devicePixelRatio || 1;
-    const scrollX = window.scrollX || window.pageXOffset || 0;
-    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
 
-    // Step 1 — tiles + UI (SVG & details panel hidden)
+    // ── Step 1: Capture the full viewport (map tiles + static UI) ──────────
+    // All Leaflet elements now have plain pixel left/top — no transforms —
+    // so they land exactly where the browser drew them on screen.
     const canvas = await html2canvas(document.body, {
       useCORS: true,
       allowTaint: true,
       scale: DPR,
       logging: false,
-      scrollX: scrollX,
-      scrollY: scrollY,
-      x: scrollX,
-      y: scrollY,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
+      x: 0,
+      y: 0,
+      scrollX: 0,
+      scrollY: 0,
+      width: W,
+      height: H,
+      windowWidth: W,
+      windowHeight: H,
     });
 
+    // Restore transforms before compositing SVG / panel
     restore();
 
-    // Step 2 — SVG overlay(s), composited in the same z-order as the live map
+    // ── Step 2: Composite SVG vector overlays ──────────────────────────────
+    // Pass the pre-neutralization geometry so overlays land in the right place.
     for (const renderer of renderers) {
-      await drawSvgOverlayOntoCanvas(map, renderer, canvas, DPR);
+      await drawSvgOverlayOntoCanvas(map, renderer, canvas, DPR, mapRect, mapPanOffset);
     }
 
-    // Step 2b — details panel on top
+    // ── Step 2b: Composite details panel on top ────────────────────────────
     await drawDetailsPanelOntoCanvas(canvas, DPR);
 
-    // Step 3 — stamps
+    // ── Step 3: Stamps ─────────────────────────────────────────────────────
     const ctx = canvas.getContext("2d");
     await stampLogo(ctx, canvas, DPR);
     stampDisclaimer(ctx, canvas, DPR);
     stampDateTime(ctx, canvas, DPR);
 
     _capturedCanvas = canvas;
-    document.getElementById("screenshot-preview-img").src =
-      canvas.toDataURL("image/png");
-    document
-      .getElementById("screenshot-preview-modal")
-      .classList.remove("hidden");
+    document.getElementById("screenshot-preview-img").src = canvas.toDataURL("image/png");
+    document.getElementById("screenshot-preview-modal").classList.remove("hidden");
   } catch (err) {
     console.error("[Screenshot] Capture failed:", err);
     restore();
@@ -417,4 +448,3 @@ async function captureWithMap(map) {
     if (window.lucide) lucide.createIcons();
   }
 }
-
